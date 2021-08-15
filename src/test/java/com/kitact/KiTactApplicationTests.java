@@ -1,4 +1,4 @@
-package com.example.kitact;
+package com.kitact;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
