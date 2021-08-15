@@ -1,13 +1,13 @@
-package com.kitact;
+package com.example.kitact;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@EnableJpaAuditing
 @SpringBootApplication
 public class KiTactApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(KiTactApplication.class, args);
     }
+
 }
