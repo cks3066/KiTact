@@ -1,6 +1,6 @@
 package com.kitact.data.model;
 
-import com.kitact.data.model.base.TimeStamped;
+import com.kitact.data.model.base.Timestamped;
 import lombok.*;
 import javax.persistence.*;
 
@@ -9,13 +9,11 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Payment extends TimeStamped {
-    public Payment(Order order_id, Boolean is_ended) {
-        this.order_id = order_id;
-        this.is_ended  = is_ended;
-    }
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@Table(name = "tb_payment")
+public class Payment extends Timestamped {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long payment_id;
 
     @OneToOne
@@ -23,6 +21,11 @@ public class Payment extends TimeStamped {
     private Order order_id;
 
     @Column
-    private Boolean is_ended;
+    private Boolean ended;
+
+    public Payment(Order order_Entity_id, Boolean is_ended) {
+        this.order_id = order_Entity_id;
+        this.ended  = is_ended;
+    }
 }
 
