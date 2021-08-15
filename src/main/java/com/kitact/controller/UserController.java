@@ -1,45 +1,43 @@
 package com.kitact.controller;
 
-import com.kitact.data.dto.SignupRequestDto;
+import com.kitact.data.dto.SignUpRequestDTO;
+import com.kitact.repository.UserRepository;
 import com.kitact.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
-
+    private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserRepository userRepository, UserService userService) {
+        this.userRepository = userRepository;
         this.userService = userService;
     }
 
-    // 회원 로그인 페이지
-    @GetMapping("/user/login")
-    public String login() {
-        return "login";
+    // 로그인 페이지로 Redirect
+    @GetMapping("/sign-in")
+    public String signIn() {
+        return "sign-in";
     }
 
-    @GetMapping("/user/login/error")
-    public String loginError(Model model) {
-        model.addAttribute("loginError", true);
-        return "login";
+    // 회원가입 페이지로 Redirect
+    @GetMapping("/sign-up")
+    public String signUp() {
+        return "sign-up";
     }
 
-    // 회원 가입 페이지
-    @GetMapping("/user/signup")
-    public String signup() {
-        return "signup";
-    }
-
-    // 회원 가입 요청 처리
-    @PostMapping("/user/signup")
-    public String registerUser(SignupRequestDto requestDto) {
-        userService.registerUser(requestDto);
+    // 회원가입 로직
+    @PostMapping("/sign-up")
+    public String signUp(SignUpRequestDTO signUpRequestDTO) {
+        userService.signUpUser(signUpRequestDTO);
         return "redirect:/";
     }
 }
