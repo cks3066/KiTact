@@ -1,4 +1,4 @@
-package com.example.kitact.configuration.security;
+package com.kitact.configuration.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,10 +29,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.headers().frameOptions().disable();
         http.authorizeRequests()
-                .antMatchers("/**").permitAll()
-//                .antMatchers("/user/**").permitAll()
-//                .antMatchers("/h2-console/**").permitAll()
-//                .anyRequest().authenticated()
+//                .antMatchers("/**").permitAll()
+                .antMatchers("/user/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/user/sign-in")
