@@ -1,6 +1,9 @@
 package com.kitact.data.model;
 
+import lombok.Getter;
+
 public enum UserRole {
-    USER,  // 사용자 권한
-    ADMIN  // 관리자 권한
+    CUSTOMER,  // 고객
+    OWNER, // 점주
+    ADMIN  // 관리자
 }

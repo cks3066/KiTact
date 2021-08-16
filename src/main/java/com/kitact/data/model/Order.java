@@ -1,7 +1,9 @@
 package com.kitact.data.model;
-import com.kitact.data.model.base.TimeStamped;
+
+import com.kitact.data.model.base.Timestamped;
 
 import lombok.*;
+
 import javax.persistence.*;
 
 @ToString(callSuper = true)
@@ -9,20 +11,23 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Order extends TimeStamped {
-    public Order(Restaurant restaurant_id, Reservation reservation_id) {
-        this.restaurant_id = restaurant_id;
-        this.reservation_id = reservation_id;
-    }
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@Table(name = "tb_order")
+public class Order extends Timestamped {
+
     @Id
-    private Long order_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(nullable = false, insertable = false, updatable = false)
-    private Restaurant restaurant_id;
+    private Restaurant restaurant;
 
     @OneToOne
     @JoinColumn(nullable = false, insertable = false, updatable = false)
-    private Reservation reservation_id;
+    private Reservation reservation;
+
+    public Order(Restaurant restaurant_id, Reservation reservation_id) {
+        this.restaurant = restaurant_id;
+        this.reservation = reservation_id;
+    }
 }

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass // 상속했을 때, 컬럼으로 인식하게 됩니다.
 @EntityListeners(AuditingEntityListener.class) // 변경되었을 때 자동으로 기록합니다.
 // abstract 상속으로만 사용
-public abstract class TimeStamped {
+public abstract class Timestamped {
     @CreatedDate // 최초 생성 시점
     private LocalDateTime createdAt;
 

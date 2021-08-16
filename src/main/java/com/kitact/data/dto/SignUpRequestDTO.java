@@ -1,13 +1,18 @@
 package com.kitact.data.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class SignupRequestDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class SignUpRequestDTO {
     private String username;
     private String password;
     private boolean admin = false;
+    private boolean owner = false;
     private String adminToken = "";
 }
