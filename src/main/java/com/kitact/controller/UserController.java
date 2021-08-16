@@ -5,12 +5,9 @@ import com.kitact.repository.UserRepository;
 import com.kitact.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
     private final UserRepository userRepository;
@@ -22,16 +19,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 로그인 페이지로 Redirect
-    @GetMapping("/sign-in")
+    @PostMapping("/sign-in")
     public String signIn() {
-        return "sign-in";
-    }
-
-    // 회원가입 페이지로 Redirect
-    @GetMapping("/sign-up")
-    public String signUp() {
-        return "sign-up";
+        return "";
     }
 
     // 회원가입 로직
