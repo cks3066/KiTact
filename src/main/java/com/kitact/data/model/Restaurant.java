@@ -28,11 +28,32 @@ public class Restaurant extends Timestamped {
     @Column(nullable = false)
     private String restaurant_name;
 
-    @Column(nullable = false)
-    private String location;
+    @Column
+    private String address;
 
-    public Restaurant(String restaurant_name, String location) {
+    @Column
+    private String telephone;
+
+    @Column
+    private String openinghours;
+
+    @Column(nullable = false)
+    private Integer mapx;
+
+    @Column(nullable = false)
+    private Integer mapy;
+
+    @Column(nullable = false)
+    private String category;
+
+
+    public Restaurant(String restaurant_name, String telephone, String openinghours,
+                      Integer mapx, Integer mapy, String category) {
         this.restaurant_name = restaurant_name;
-        this.location = location;
+        this.telephone = telephone;
+        this.openinghours = openinghours;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.category = category;
     }
 }
