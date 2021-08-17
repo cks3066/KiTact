@@ -37,7 +37,15 @@ public class RestaurantService {
             throw new IllegalArgumentException("사용자 이름 : " + username + "으로 이미 식당이 등록되어 있습니다!");
         }
 
-        Restaurant restaurant = new Restaurant(user_id, restaurant_name, category, address, telephone, openinghours, mapx, mapy);
+        Restaurant restaurant = new Restaurant();
+        restaurant.setUser_id(user_id);
+        restaurant.setRestaurant_name(restaurant_name);
+        restaurant.setCategory(category);
+        restaurant.setAddress(address);
+        restaurant.setTelephone(telephone);
+        restaurant.setOpeninghours(openinghours);
+        restaurant.setMapx(mapx);
+        restaurant.setMapy(mapy);
         return restaurantRepository.save(restaurant);
     }
 
