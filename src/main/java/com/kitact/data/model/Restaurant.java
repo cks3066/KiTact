@@ -47,8 +47,10 @@ public class Restaurant extends Timestamped {
     private String category;
 
 
-    public Restaurant(String restaurant_name, String address, String telephone, String openinghours,
+    public Restaurant(User user_id, Wishlist wishlist_id, String restaurant_name, String address, String telephone, String openinghours,
                       Integer mapx, Integer mapy, String category) {
+        this.user_id = user_id;
+        this.wishlist_id = wishlist_id;
         this.restaurant_name = restaurant_name;
         this.address = address;
         this.telephone = telephone;
