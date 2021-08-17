@@ -1,9 +1,12 @@
 package com.kitact.service;
 
+import com.kitact.configuration.security.JWTProvider;
+import com.kitact.data.dto.SignInRequestDTO;
 import com.kitact.data.dto.SignUpRequestDTO;
 import com.kitact.data.model.User;
 import com.kitact.data.model.UserRole;
 import com.kitact.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,18 +15,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JWTProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
     private static final String ADMIN_TOKEN = "AAABnv/xRVklrnYxKZ0aHgTBcXukeZygoC";
-
-    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-    }
 
     //회원가입
     public User signUpUser(SignUpRequestDTO signUpRequestDTO) {
@@ -56,4 +54,19 @@ public class UserService {
         User user = new User(username, password, userRole);
         return userRepository.save(user);
     }
+
+    public String signInUser(SignInRequestDTO signInRequestDTO) {
+        String username = signInRequestDTO.getUsername();
+
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("로그인에 실패했습니다!")
+        );
+
+        if (!passwordEncoder.matches(signInRequestDTO.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("로그인에 실패했습니다!");
+        }
+
+        return jwtProvider.createToken(user.getUser_id().toString(), user.getRole());
+    }
+
 }
