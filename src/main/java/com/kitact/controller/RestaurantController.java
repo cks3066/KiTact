@@ -1,11 +1,14 @@
 package com.kitact.controller;
 
+import com.kitact.data.model.Restaurant;
 import com.kitact.repository.RestaurantRepository;
 import com.kitact.service.RestaurantService;
 import com.kitact.data.dto.RestaurantEnrollDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/restaurant")
@@ -21,7 +24,7 @@ public class RestaurantController {
 
     // show restaurant
     @GetMapping("/user")
-    public String showRestaurant() {
+    List<Restaurant> all() {
         return restaurantRepository.findAll();
     }
 
