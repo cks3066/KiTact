@@ -18,45 +18,59 @@ public class Restaurant extends Timestamped {
     private Long restaurant_id;
 
     @ManyToOne
-    @JoinColumn(nullable = false, insertable = false, updatable = false)
+    @JoinColumn
     private User user_id;
 
     @ManyToOne
-    @JoinColumn(nullable = false, insertable = false, updatable = false)
+    @JoinColumn
     private Wishlist wishlist_id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String restaurant_name;
 
-    @Column
+    @Column(length = 100)
+    private String tag;
+
+    @Column(length = 100)
     private String address;
 
-    @Column
+    @Column(length = 15)
     private String telephone;
 
     @Column
+    private String restaurant_image;
+
+    @Column(length = 30)
     private String openinghours;
 
-    @Column(nullable = false)
-    private Integer mapx;
+    @Column(nullable = false, length = 10)
+    private String big_category;
 
-    @Column(nullable = false)
-    private Integer mapy;
+    @Column(nullable = false, length = 10)
+    private String small_category;
 
-    @Column(nullable = false)
-    private String category;
+    @Column
+    private Float lat;
 
+    @Column
+    private Float lng;
 
-    public Restaurant(User user_id, Wishlist wishlist_id, String restaurant_name, String address, String telephone, String openinghours,
-                      Integer mapx, Integer mapy, String category) {
+    public Restaurant(User user_id, Wishlist wishlist_id, String restaurant_name,
+                      String tag, String address, String telephone,
+                      String restaurant_image, String openinghours,
+                      String big_category, String small_category,
+                      Float lat, Float lng) {
         this.user_id = user_id;
         this.wishlist_id = wishlist_id;
         this.restaurant_name = restaurant_name;
+        this.tag = tag;
         this.address = address;
         this.telephone = telephone;
+        this.restaurant_image = restaurant_image;
         this.openinghours = openinghours;
-        this.mapx = mapx;
-        this.mapy = mapy;
-        this.category = category;
+        this.big_category = big_category;
+        this.small_category = small_category;
+        this.lat = lat;
+        this.lng = lng;
     }
 }
