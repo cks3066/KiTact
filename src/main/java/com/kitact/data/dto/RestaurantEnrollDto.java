@@ -10,12 +10,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RestaurantEnrollDto {
-    private String username;
     private String restaurant_name;
-    private String category;
+    private String tag;
     private String address;
     private String telephone;
     private String openinghours;
-    private Integer mapx;
-    private Integer mapy;
+    private String big_category;
+    private String small_category;
+    private Float lat;
+    private Float lng;
 }
