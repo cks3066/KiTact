@@ -15,8 +15,8 @@ export const TopMenuComponent = () => {
                     <Navbar.Brand href="/">
                         Home
                     </Navbar.Brand>
-                    <Navbar.Brand href="/main">
-                        Main
+                    <Navbar.Brand href="/menulist">
+                        Menu
                     </Navbar.Brand>
                     <Navbar.Brand href="/dashboard">
                         Dashboard
