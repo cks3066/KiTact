@@ -46,7 +46,7 @@ const Login = (props) => {
         <Button
           text="로그인하기"
           _onClick={() => {
-            console.log("로그인 했어!");
+            console.log("로그인");
             login();
           }}
         ></Button>

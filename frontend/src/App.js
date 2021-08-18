@@ -1,12 +1,17 @@
 import React from "react";
-import { BrowserRouter, Router, withRouter } from "react-router-dom";
+import { BrowserRouter, Router, withRouter, Route } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
+import {DashboardComponent} from './DashboardComponent'
+import SearchbyMap from "./pages/SearchbyMap";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+
 import { TopMenuComponent } from "./component/TopMenuComponent";
 import { Restaurant } from "./component/Restaurant";
-import MainComponent from "./MainComponent";
+import Connect from "./Connect";
 import { connect } from "react-redux";
 import {
   loadMenu,
@@ -40,12 +45,19 @@ const mapDispatchToPOrops = (dispatch) => {
   };
 };
 function App() {
+  <Connect />;
   return (
     <div className="App">
       <div>
         <TopMenuComponent />
-        <MainComponent />
-        <Restaurant />
+        <BrowserRouter>
+          <Route path="/" exact component={SearchbyMap} />
+          <Route path="/menulist" component={Restaurant} />
+          <Route path="/dashboard" component={DashboardComponent} />
+          <Route path="/map" component={SearchbyMap} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+        </BrowserRouter>
       </div>
     </div>
   );

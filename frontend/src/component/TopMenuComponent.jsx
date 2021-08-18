@@ -1,12 +1,6 @@
 import React from "react";
 import {Navbar} from "react-bootstrap";
-import {BrowserRouter as Router, Route} from "react-router-dom";
-
-import Main from '../pages/Main'
-import {DashboardComponent} from './DashboardComponent'
-import SearchbyMap from "../pages/SearchbyMap";
-import Login from "../pages/Login";
-import Signup from "../pages/Signup";
+import {BrowserRouter as Router} from "react-router-dom";
 
 export const TopMenuComponent = () => {
     return (
@@ -34,13 +28,6 @@ export const TopMenuComponent = () => {
                         회원가입
                     </Navbar.Brand>
                 </Navbar>
-
-                <Route path="/main" component={Main} />
-                <Route path="/dashboard" component={DashboardComponent} />
-                <Route path="/map" component={SearchbyMap} />
-                <Route path="/login" component={Login} />
-                <Route path="/signup" component={Signup} />
-
             </Router>
     )
 }
