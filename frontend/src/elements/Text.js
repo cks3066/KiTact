@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Text = (props) => {
+export const Text = (props) => {
   const { bold, color, size, children, margin } = props;
   const styles = {
     bold: bold,
@@ -27,5 +27,3 @@ const P = styled.p`
   font-weight: ${(props) => (props.bold ? "600" : "400")};
   ${(props) => (props.margin ? `margin : ${props.margin};` : "")};
 `;
-
-export default Text;

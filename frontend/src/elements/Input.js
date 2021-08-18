@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { Text, Grid } from "./index";
 
-const Input = (props) => {
+export const Input = (props) => {
   const { label, placeholder, _onChange, type } = props;
   return (
     <React.Fragment>
@@ -28,5 +28,3 @@ const ElInput = styled.input`
   padding: 12px 4px;
   box-sizing: border-box;
 `;
-
-export default Input;
