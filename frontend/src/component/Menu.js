@@ -7,29 +7,21 @@ import { calculate, decrement, increment } from "../redux/modules/menu";
 
 export const Menu = ({ menu }) => {
   const dispatch = useDispatch();
-  const [isActive, setMenu] = useState(false);
 
-  const toggleMenu = () => {
-    if (menu.quantity > 1) {
-      setMenu((isActive) => !isActive);
-    } else {
-      setMenu(isActive);
-    }
+  const increaseQuantity = () => {
+    dispatch(increment(menu.id));
     const menu_flag = {
       id: menu.id,
-      active: isActive,
     };
     dispatch(calculate(menu_flag));
   };
 
-  const increaseQuantity = () => {
-    dispatch(increment(menu.id));
-    toggleMenu();
-  };
-
   const decreaseQuantity = () => {
     dispatch(decrement(menu.id));
-    toggleMenu();
+    const menu_flag = {
+      id: menu.id,
+    };
+    dispatch(calculate(menu_flag));
   };
 
   return (
@@ -40,8 +32,8 @@ export const Menu = ({ menu }) => {
         </Grid>
         <Grid>
           <Service>
-            <MenuPanel onClick={toggleMenu} isActive={menu.active}>
-              {menu.name}{" "}
+            <MenuPanel onClick={increaseQuantity} isActive={menu.active}>
+              {menu.name}
               <b>₩ {new Intl.NumberFormat().format(menu.price)}원</b>
             </MenuPanel>
             <QuantityInput>

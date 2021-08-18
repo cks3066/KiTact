@@ -74,16 +74,12 @@ export default function reducer(state = initialState, action = {}) {
       return { list: new_menu_list };
     }
     case "menu/CALCULATE": {
-      state.list.find((l) => l.id === action.menu_flag.id).active =
-        !action.menu_flag.active;
       const price = state.list
-        .filter((m) => m.active)
         .map((m) => m.price * m.quantity)
         .reduce((a, b) => a + b, 0);
       return { ...state, total_price: price };
     }
     case "menu/INCREMENT":
-      console.log(action);
       action.index--;
       return {
         ...state,
@@ -92,13 +88,13 @@ export default function reducer(state = initialState, action = {}) {
           {
             ...state.list[action.index],
             quantity: state.list[action.index].quantity + 1,
+            active: true,
           },
           ...state.list.slice(action.index + 1, state.list.length),
         ],
       };
 
     case "menu/DECREMENT":
-      console.log(action);
       action.index--;
       return {
         ...state,
@@ -110,6 +106,7 @@ export default function reducer(state = initialState, action = {}) {
               state.list[action.index].quantity === 0
                 ? 0
                 : state.list[action.index].quantity - 1,
+            active: state.list[action.index].quantity < 2 ? false : true,
           },
           ...state.list.slice(action.index + 1, state.list.length),
         ],
