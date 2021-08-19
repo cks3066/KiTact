@@ -15,10 +15,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 /**
  * JWT 생성 및 검증 모듈입니다.
@@ -31,7 +29,7 @@ public class JWTProvider {
     private String secretKey;
 
     // 토큰 만료시간, 24시간 동안 유효합니다.
-    private long tokenValidMilisecond = 1000L * 60 * 60 * 24;
+    private long tokenValidMillisecond = 1000L * 60 * 60 * 24;
 
     private final UserDetailsService userDetailsService;
 
@@ -48,7 +46,7 @@ public class JWTProvider {
         return Jwts.builder()
                 .setClaims(claims) // JWT 데이터
                 .setIssuedAt(now) // JWT 발행일자
-                .setExpiration(new Date(now.getTime() + tokenValidMilisecond)) // JWT 만료일자
+                .setExpiration(new Date(now.getTime() + tokenValidMillisecond)) // JWT 만료일자
                 .signWith(SignatureAlgorithm.HS256, secretKey) // 암호화 알고리즘, secret 값 세팅
                 .compact();
     }
