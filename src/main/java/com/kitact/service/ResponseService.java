@@ -24,6 +24,27 @@ public class ResponseService {
             this.message = message;
         }
     }
+
+    // 단일 데이터 반환
+    public <T> SingleResponse getSingleResponse(T data) {
+        SingleResponse response = new SingleResponse();
+        response.setData(data);
+        response.setSuccess(true);
+        response.setCode(Response.SUCCESS.getCode());
+        response.setMessage(Response.SUCCESS.getMessage());
+        return response;
+    }
+
+    // 여러 개의 데이터 반환
+    public <T> MultiResponse getMultiResponse(List<T> listData) {
+        MultiResponse response = new MultiResponse();
+        response.setListData(listData);
+        response.setSuccess(true);
+        response.setCode(Response.SUCCESS.getCode());
+        response.setMessage(Response.SUCCESS.getMessage());
+        return response;
+    }
+
     // 단순 성공 여부만 반환
     public BaseResponse getSuccessResponse() {
         BaseResponse response = new BaseResponse();
