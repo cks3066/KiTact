@@ -14,6 +14,8 @@ public class ResponseService {
     public enum Response {
         SUCCESS(0, "성공"),
         FAIL(-1, "실패"),
+        NOT_DEFINE_ERROR(-1, "정의되지 않은 오류입니다!"),
+        ACCESS_DENIED(-1, "리소스에 접근할 수 있는 권한이 없습니다.")
         ;
 
         private final int code;
