@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import {DashboardComponent} from './DashboardComponent'
-import SearchbyMap from "./pages/SearchbyMap";
+import Search from "./pages/Search";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
@@ -51,10 +51,10 @@ function App() {
       <div>
         <TopMenuComponent />
         <BrowserRouter>
-          <Route path="/" exact component={SearchbyMap} />
+          <Route path="/" exact component={Search} />
           <Route path="/menulist" component={Restaurant} />
           <Route path="/dashboard" component={DashboardComponent} />
-          <Route path="/map" component={SearchbyMap} />
+          <Route path="/map" component={Search} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
         </BrowserRouter>

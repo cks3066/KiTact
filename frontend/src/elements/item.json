@@ -1,0 +1,28 @@
+{
+    "lastBuildDate": "Tue, 15 Sep 2020 18:05:33 +0900",
+    "total": 24,
+    "start": 1,
+    "display": 10,
+    "items": [
+      {
+        "username": "on_chan",
+        "restaurant_name": "진미식당",
+        "category": "한식",
+        "address": "서울시 노원구",
+        "telephone": "010-1234-1234",
+        "openinghours": "2시",
+        "lat": "32",
+        "lng": "32"
+      },
+      {
+        "username": "on_chan",
+        "restaurant_name": "진구식당",
+        "category": "중식",
+        "address": "부산시 노원구",
+        "telephone": "010-1234-1234",
+        "openinghours": "2시",
+        "lat": "32",
+        "lng": "32"
+      }
+    ]
+  }
