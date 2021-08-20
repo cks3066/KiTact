@@ -37,11 +37,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 //.antMatchers("/**").permitAll()
+                .antMatchers("/exception/**").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JWTAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling();
+                .exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPointImpl())
+                .and()
+                .addFilterBefore(new JWTAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
     }
 }
