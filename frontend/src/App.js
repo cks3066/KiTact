@@ -20,7 +20,6 @@ import {
   increment,
   decrement,
 } from "./redux/modules/menu";
-import Aaxios from "./Aaxios";
 
 const mapStateToProps = (state) => {
   return { menu_list: state.menu.list };
@@ -59,7 +58,6 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
         </BrowserRouter>
-        <Aaxios></Aaxios>
       </div>
     </div>
   );
