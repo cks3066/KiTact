@@ -5,6 +5,20 @@ const INCREMENT = "menu/INCREMENT";
 const DECREMENT = "menu/DECREMENT";
 
 const initialState = {
+  info: {
+    large_category: "식당",
+    midium_category: "양식",
+    small_category: "치킨",
+    name: "키택트 치킨",
+    img: "https://likerdo-bucket-list.s3.ap-northeast-2.amazonaws.com/%EC%B9%98%ED%82%A8%EC%A7%91.jpg",
+    address: "서울특별시 구로구 오류동 1234",
+    tel: "123-1234",
+    time: "15:00 ~ 23:00",
+    total_seat_count: 15,
+    vacancy_count: 0,
+    detail:
+      "치킨과 생맥주가 맛있는 키택트 치킨으로 놀러오세요!!! 방역 철저 준수",
+  },
   list: [
     {
       id: 1,
