@@ -3,7 +3,7 @@ import jsonData from "./item.json";
 import { Input, Row, Col } from "antd";
 import axios from "axios";
 const { Search } = Input;
-const MovieSearchContainer = () => {
+const RestaurantSearch = () => {
   const [query, setQuery] = useState("");
   const handleQuery = (e) => {
     setQuery(e.target.value);
@@ -12,7 +12,7 @@ const MovieSearchContainer = () => {
 
   const handleButton = async () => {
     try {
-      const res = await axios.get("http://localhost:3031/naver/getNaverMovie", {
+      const res = await axios.get("http://localhost:3000/naver/getNaverMovie", {
         params: {
           query: query,
         },
@@ -39,4 +39,4 @@ const MovieSearchContainer = () => {
     </Fragment>
   );
 };
-export default MovieSearchContainer;
+export default RestaurantSearch;

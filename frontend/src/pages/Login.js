@@ -21,9 +21,6 @@ import { getCookie, setCookie, deleteCookie } from '../shared/Cookie'
 import { useDispatch } from 'react-redux'
 import { actionCreators as userActions } from '../redux/modules/user'
 import { emailCheck } from '../shared/common'
-import { createBrowserHistory } from 'history'
-
-export const history = createBrowserHistory()
 
 const useStyles = makeStyles(theme => ({
   paper: {

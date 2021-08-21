@@ -2,17 +2,15 @@ import React from 'react'
 import { BrowserRouter, Router, withRouter, Route } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box';
+import Box from '@material-ui/core/Box'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 
-import { DashboardComponent } from './DashboardComponent'
 import Search from './pages/Search'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 
-import { TopMenuComponent } from './component/TopMenuComponent'
 import { Restaurant } from './component/Restaurant'
 import Connect from './Connect'
 import { connect } from 'react-redux'
@@ -24,6 +22,7 @@ import { actionCreators as userActions } from './redux/modules/user'
 import { useDispatch } from 'react-redux'
 
 import { history } from './redux/configStore'
+import Header from './component/Header'
 
 const mapStateToProps = state => {
   return { menu_list: state.menu.list }
@@ -69,21 +68,22 @@ function App() {
       dispatch(userActions.loginCheckFB())
     }
   }, [])
-
   ;<Connect />
   return (
     <div className='App'>
       <div>
-        <TopMenuComponent />
+        {/* Drawer & Header */}
+        <Header />
+
         <ConnectedRouter history={history}>
           <Route path='/' exact component={Search} />
           <Route path='/menulist' exact component={Restaurant} />
-          <Route path='/dashboard' exact component={DashboardComponent} />
           <Route path='/map' exact component={Search} />
           <Route path='/login' exact component={Login} />
           <Route path='/signup' exact component={Signup} />
         </ConnectedRouter>
 
+        {/* Footer */}
         <Box mt={5}>
           <Copyright />
         </Box>
