@@ -1,66 +1,95 @@
-import React from "react";
-import { BrowserRouter, Router, withRouter, Route } from "react-router-dom";
+import React from 'react'
+import { BrowserRouter, Router, withRouter, Route } from 'react-router-dom'
+import { ConnectedRouter } from 'connected-react-router'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box';
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './App.css'
 
-import {DashboardComponent} from './DashboardComponent'
-import Search from "./pages/Search";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import { DashboardComponent } from './DashboardComponent'
+import Search from './pages/Search'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 
-import { TopMenuComponent } from "./component/TopMenuComponent";
-import { Restaurant } from "./component/Restaurant";
-import Connect from "./Connect";
-import { connect } from "react-redux";
-import {
-  loadMenu,
-  createMenu,
-  calculate,
-  increment,
-  decrement,
-} from "./redux/modules/menu";
+import { TopMenuComponent } from './component/TopMenuComponent'
+import { Restaurant } from './component/Restaurant'
+import Connect from './Connect'
+import { connect } from 'react-redux'
+import { loadMenu, createMenu, calculate, increment, decrement } from './redux/modules/menu'
 
-const mapStateToProps = (state) => {
-  return { menu_list: state.menu.list };
-};
+import { apiKey } from './shared/Firebase'
 
-const mapDispatchToPOrops = (dispatch) => {
-  return {
-    load: () => {
-      dispatch(loadMenu());
-    },
-    create: (menu) => {
-      dispatch(createMenu(menu));
-    },
-    calculate: (menu) => {
-      dispatch(calculate(menu));
-    },
-    increment: (index) => {
-      dispatch(increment(index));
-    },
-    decrement: (index) => {
-      dispatch(decrement(index));
-    },
-  };
-};
-function App() {
-  <Connect />;
-  return (
-    <div className="App">
-      <div>
-        <TopMenuComponent />
-        <BrowserRouter>
-          <Route path="/" exact component={Search} />
-          <Route path="/menulist" component={Restaurant} />
-          <Route path="/dashboard" component={DashboardComponent} />
-          <Route path="/map" component={Search} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-        </BrowserRouter>
-      </div>
-    </div>
-  );
+import { actionCreators as userActions } from './redux/modules/user'
+import { useDispatch } from 'react-redux'
+
+import { history } from './redux/configStore'
+
+const mapStateToProps = state => {
+  return { menu_list: state.menu.list }
 }
 
-export default connect(mapStateToProps, mapDispatchToPOrops)(withRouter(App));
+const mapDispatchToPOrops = dispatch => {
+  return {
+    load: () => {
+      dispatch(loadMenu())
+    },
+    create: menu => {
+      dispatch(createMenu(menu))
+    },
+    calculate: menu => {
+      dispatch(calculate(menu))
+    },
+    increment: index => {
+      dispatch(increment(index))
+    },
+    decrement: index => {
+      dispatch(decrement(index))
+    },
+  }
+}
+
+function Copyright() {
+  return (
+    <Typography variant='body2' color='textSecondary' align='center'>
+      {'SpartaCodingClub Project KiTact'} {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  )
+}
+
+function App() {
+  const dispatch = useDispatch()
+
+  const _session_key = `firebase:authUser:${apiKey}:kitact`
+  const is_session = sessionStorage.getItem(_session_key) ? true : false
+
+  React.useEffect(() => {
+    if (is_session) {
+      dispatch(userActions.loginCheckFB())
+    }
+  }, [])
+
+  ;<Connect />
+  return (
+    <div className='App'>
+      <div>
+        <TopMenuComponent />
+        <ConnectedRouter history={history}>
+          <Route path='/' exact component={Search} />
+          <Route path='/menulist' exact component={Restaurant} />
+          <Route path='/dashboard' exact component={DashboardComponent} />
+          <Route path='/map' exact component={Search} />
+          <Route path='/login' exact component={Login} />
+          <Route path='/signup' exact component={Signup} />
+        </ConnectedRouter>
+
+        <Box mt={5}>
+          <Copyright />
+        </Box>
+      </div>
+    </div>
+  )
+}
+
+export default connect(mapStateToProps, mapDispatchToPOrops)(withRouter(App))

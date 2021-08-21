@@ -1,79 +1,165 @@
-import React from "react";
-import { Grid, Text, Input, Button } from "../elements";
+import React from 'react'
 
-const Signup = (props) => {
-  const [id, setId] = React.useState("");
-  const [pwd, setPwd] = React.useState("");
-  const [pwd_check, setPwdCheck] = React.useState("");
-  const [user_name, setUserName] = React.useState("");
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
+import Link from '@material-ui/core/Link'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 
-  const signup = () => {
-    if (id === "" || pwd === "" || user_name === "") {
-      return;
+import { useDispatch } from 'react-redux'
+import { actionCreators as userActions } from '../redux/modules/user'
+import { emailCheck } from '../shared/common'
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}))
+
+const Signup = props => {
+  // eslint-disable-next-line no-lone-blocks
+  {
+    const classes = useStyles()
+    const dispatch = useDispatch()
+
+    const [id, setId] = React.useState('')
+    const [pwd, setPwd] = React.useState('')
+    const [pwd_check, setPwdCheck] = React.useState('')
+    const [user_name, setUserName] = React.useState('')
+
+    const signup = () => {
+      if (id === '' || pwd === '' || user_name === '') {
+        window.alert('아이디, 패스워드, 닉네임을 모두 입력해주세요!')
+        return
+      }
+
+      if (!emailCheck(id)) {
+        window.alert('이메일 형식이 맞지 않습니다!')
+        return
+      }
+
+      if (pwd !== pwd_check) {
+        window.alert('패스워드와 패스워드 확인이 일치하지 않습니다!')
+        return
+      }
+
+      dispatch(userActions.signupFB(id, pwd, user_name))
     }
 
-    if (pwd !== pwd_check) {
-      return;
-    }
-  };
+    return (
+      <Container component='main' maxWidth='xs'>
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}></Avatar>
+          <Typography component='h1' variant='h5'>
+            회원가입
+          </Typography>
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete='fname'
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='email'
+                  label='이메일을 입력해주세요.'
+                  onChange={e => {
+                    setId(e.target.value)
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='lstNamea'
+                  label='닉네임을 입력해주세요.'
+                  name='nickname'
+                  onChange={e => {
+                    setUserName(e.target.value)
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  required
+                  fullWidth
+                  name='password'
+                  label='비밀번호를 입력해주세요.'
+                  type='password'
+                  id='password'
+                  onChange={e => {
+                    setPwd(e.target.value)
+                  }}
+                />
+                <Grid item xs={12}>
+                  <TextField
+                    variant='outlined'
+                    required
+                    fullWidth
+                    name='password'
+                    label='비밀번호를 다시 입력해주세요.'
+                    type='password'
+                    id='password'
+                    onChange={e => {
+                      setPwdCheck(e.target.value)
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={<Checkbox value='userRole' color='primary' />}
+                    label='기업 회원입니다.'
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                fullWidth
+                variant='contained'
+                color='primary'
+                className={classes.submit}
+                onClick={signup}
+              >
+                Sign Up
+              </Button>
+              <Grid container justifyContent='flex-end'>
+                <Grid item>
+                  <Link href='#' variant='body2'>
+                    계정이 있으십니까? 로그인
+                  </Link>
+                </Grid>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+      </Container>
+    )
+  }
+}
 
-  return (
-    <React.Fragment>
-      <Grid padding="16px">
-        <Text size="32px" bold>
-          회원가입
-        </Text>
-
-        <Grid padding="16px 0px">
-          <Input
-            label="아이디"
-            placeholder="아이디를 입력해주세요."
-            _onChange={(e) => {
-              console.log(e.target.value);
-              setId(e.target.value);
-            }}
-          />
-        </Grid>
-
-        <Grid padding="16px 0px">
-          <Input
-            label="닉네임"
-            placeholder="닉네임을 입력해주세요."
-            _onChange={(e) => {
-              console.log(e.target.value);
-              setUserName(e.target.value);
-            }}
-          />
-        </Grid>
-
-        <Grid padding="16px 0px">
-          <Input
-            label="비밀번호"
-            placeholder="비밀번호를 입력해주세요."
-            _onChange={(e) => {
-              console.log(e.target.value);
-              setPwd(e.target.value);
-            }}
-          />
-        </Grid>
-
-        <Grid padding="16px 0px">
-          <Input
-            label="비밀번호 확인"
-            placeholder="비밀번호를 다시 입력해주세요."
-            _onChange={(e) => {
-              console.log(e.target.value);
-              setPwdCheck(e.target.value);
-            }}
-          />
-        </Grid>
-
-        <Button text="회원가입하기" _onClick={signup}></Button>
-      </Grid>
-    </React.Fragment>
-  );
-};
-
-Signup.defaultProps = {};
-
-export default Signup;
+export default Signup
