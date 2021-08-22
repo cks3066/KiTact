@@ -2,6 +2,7 @@ package com.kitact.data.model;
 
 import com.kitact.data.model.base.Timestamped;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @NoArgsConstructor
+@DynamicUpdate
 @Entity
 @Table(name = "tb_restaurant")
 public class Restaurant extends Timestamped {
@@ -18,8 +20,8 @@ public class Restaurant extends Timestamped {
     private Long restaurant_id;
 
     @ManyToOne
-    @JoinColumn
-    private User user_id;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn
@@ -50,18 +52,16 @@ public class Restaurant extends Timestamped {
     private String small_category;
 
     @Column
-    private Float lat;
+    private Double lat;
 
     @Column
-    private Float lng;
+    private Double lng;
 
-    public Restaurant(User user_id, Wishlist wishlist_id, String restaurant_name,
-                      String tag, String address, String telephone,
+    public Restaurant(String restaurant_name, String tag,
+                      String address, String telephone,
                       String restaurant_image, String openinghours,
                       String big_category, String small_category,
-                      Float lat, Float lng) {
-        this.user_id = user_id;
-        this.wishlist_id = wishlist_id;
+                      Double lat, Double lng) {
         this.restaurant_name = restaurant_name;
         this.tag = tag;
         this.address = address;
