@@ -13,12 +13,6 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
     "connected-react-router": "6.8.0",
-<<<<<<< HEAD
-    "cors": "^2.8.5",
-    "firebase": "^8.10.0",
-    "firebaseui": "^5.0.0",
-=======
->>>>>>> f8fc3fe58beebecc9c1b083b9e956716429c1795
     "history": "4.10.1",
     "immer": "^9.0.5",
     "jquery": "^3.6.0",
