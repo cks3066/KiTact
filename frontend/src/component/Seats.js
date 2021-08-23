@@ -4,20 +4,16 @@ import styled from "styled-components";
 import { Grid, Button } from "../elements";
 import { DraggableItem } from "../elements/DraggableItem";
 import { actionCreators as uAc } from "../redux/modules/restaurant";
+import img from "../static_img/tiles-bg.png";
 
 export const Seats = (props) => {
   const restaurant = useSelector((state) => state.restaurant);
   const dispatch = useDispatch();
 
   const [disabled, setDisabled] = useState(false);
-  const [countList, setCountList] = useState([0]);
 
   const addItem = (e) => {
-    let countArr = [...countList];
-    let counter = countArr.slice(-1)[0];
-    counter += 1;
-    countArr.push(counter);
-    setCountList(countArr);
+    console.log(e.target.value);
   };
 
   const toggleDraggable = () => {
@@ -49,8 +45,10 @@ export const Seats = (props) => {
 
 const SeatContainer = styled.div`
   width: 100%;
-  height: 550px;
+  height: 500px;
   background-color: #e4e5e6;
-  background-image: url("../../public/logo192.png");
+  background-image: url(${img});
+  background-position: center bottom;
   background-repeat: repeat-x;
+  border-radius: 0 0 13px 13px;
 `;

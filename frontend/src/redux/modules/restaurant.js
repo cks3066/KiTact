@@ -36,24 +36,24 @@ const initialState = {
         people: 3,
         icon: "👨‍👩‍👧",
         vacancy: true,
-        x: 500,
-        y: 100,
+        x: 565,
+        y: 74,
       },
       {
         id: 2,
         people: 4,
         icon: "👨‍👩‍👧‍👧",
         vacancy: true,
-        x: 500,
-        y: 200,
+        x: 566,
+        y: 199,
       },
       {
         id: 3,
         people: 1,
         icon: "🙋‍♂️",
         vacancy: false,
-        x: 500,
-        y: 300,
+        x: 384,
+        y: 147,
       },
       {
         id: 4,
@@ -61,29 +61,29 @@ const initialState = {
         icon: "👨‍❤️‍👨",
         vacancy: false,
         x: 194,
-        y: 17,
+        y: -69,
       },
       {
         id: 5,
         people: 2,
         icon: "👨‍❤️‍👨",
         vacancy: true,
-        x: 203,
-        y: 116,
+        x: 194,
+        y: 49,
       },
       {
         id: 6,
         people: 3,
         icon: "👨‍👩‍👧",
         vacancy: true,
-        x: 212,
-        y: 217,
+        x: 194,
+        y: 152,
       },
-      { id: "door", icon: "🚪", x: 55, y: -156 },
-      { id: "checkout", icon: "💰", x: 81, y: 259 },
-      { id: "kitchen", icon: "👩‍🍳", x: 360, y: 261 },
+      { id: "door", icon: "🚪", x: 11, y: -284 },
+      { id: "checkout", icon: "💰", x: 16, y: -150 },
+      { id: "kitchen", icon: "👩‍🍳", x: 393, y: 32 },
       { id: "toilet", icon: "🚽", x: 696, y: -20 },
-      { id: "window", icon: "👓", x: 350, y: -275 },
+      { id: "window", icon: "👓", x: 373, y: -490 },
     ],
   },
   menu_list: [
@@ -132,6 +132,8 @@ const ADD_TAG = "ADD_TAG";
 const REMOVE_TAG = "REMOVE_TAG";
 const SEAT_EDIT_TOGGLE = "SEAT_EDIT_TOGGLE";
 const UPDATE_SEAT = "UPDATE_SEAT";
+const ADD_SEAT = "ADD_SEAT";
+const REMOVE_SEAT = "REMOVE_SEAT";
 
 const load = createAction(LOAD, (restaurant) => ({ restaurant }));
 const creat = createAction(CREATE, (restaurant) => ({ restaurant }));
@@ -150,6 +152,8 @@ const seatEditToggle = createAction(SEAT_EDIT_TOGGLE, (seat_edit_toggle) => ({
   seat_edit_toggle,
 }));
 const updateSeat = createAction(UPDATE_SEAT, (seat_info) => ({ seat_info }));
+const addSeat = createAction(ADD_SEAT, (seat_info) => ({ seat_info }));
+const removeSeat = createAction(REMOVE_SEAT, (id) => ({ id }));
 
 export default handleActions(
   {
@@ -201,6 +205,17 @@ export default handleActions(
         seat.y = seat_info.y;
         console.log("x", seat.x, "y", seat.y, "v", seat.vacancy);
       }),
+    [ADD_SEAT]: (state, action) =>
+      produce(state, (draft) => {
+        draft.info.seats.push(action.payload.seats);
+      }),
+    [REMOVE_SEAT]: (state, action) =>
+      produce(state, (draft) => {
+        const id = draft.info.seats.find(
+          (seat) => seat.id === action.payload.id
+        );
+        draft.info.seats.splice(id, 1);
+      }),
   },
   initialState
 );
@@ -215,6 +230,8 @@ const actionCreators = {
   removeTag,
   seatEditToggle,
   updateSeat,
+  addSeat,
+  removeSeat,
 };
 
 export { actionCreators };
