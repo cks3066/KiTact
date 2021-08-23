@@ -1,28 +1,30 @@
 import React from "react";
 import styled from "styled-components";
 import { Menu } from "./Menu";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export const MenuList = () => {
-  const menu = useSelector((state) => state.menu);
+  const restaurant = useSelector((state) => state.restaurant);
   return (
     <div>
-      {menu.list.map((menu, index) => (
+      {restaurant.menu_list.map((menu, index) => (
         <Menu menu={menu} key={index} />
       ))}
+      <br />
       <TotalPrice>
-        <b>₩ {new Intl.NumberFormat().format(menu.total_price)}원</b>
+        <b>
+          글제 금액 ₩ {new Intl.NumberFormat().format(restaurant.total_price)}원
+        </b>
       </TotalPrice>
     </div>
   );
 };
 
-const TotalPrice = styled.p`
+const TotalPrice = styled.div`
   position: fixed;
-  align-content: center;
-  left: 0px;
-  bottom: 0px;
-  height: 60px;
+  text-align: center;
+  bottom: 0;
+  height: 40px;
   width: 100%;
   background: grey;
   color: white;

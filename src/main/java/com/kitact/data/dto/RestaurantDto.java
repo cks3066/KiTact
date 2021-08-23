@@ -1,5 +1,6 @@
 package com.kitact.data.dto;
 
+import com.kitact.data.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,13 +10,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RestaurantEnrollDto {
-    private String username;
+public class RestaurantDto {
     private String restaurant_name;
-    private String category;
+    private String tag;
     private String address;
     private String telephone;
     private String openinghours;
-    private Integer mapx;
-    private Integer mapy;
+    private String big_category;
+    private String small_category;
+    private Double lat;
+    private Double lng;
 }

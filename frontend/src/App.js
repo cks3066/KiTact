@@ -1,12 +1,18 @@
+<<<<<<< HEAD
 import React from 'react'
 import { BrowserRouter, Router, withRouter, Route } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+=======
+import React from "react";
+import { BrowserRouter as ConnectedRouter, Route } from "react-router-dom";
+>>>>>>> f8fc3fe58beebecc9c1b083b9e956716429c1795
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 
+<<<<<<< HEAD
 import Search from './pages/Search'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
@@ -57,6 +63,18 @@ function Copyright() {
   )
 }
 
+=======
+import { DashboardComponent } from "./DashboardComponent";
+import Search from "./pages/Search";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+
+import { TopMenuComponent } from "./component/TopMenuComponent";
+import Connect from "./Connect";
+import { history } from "./redux/configStore";
+import { Order } from "./pages/Order";
+
+>>>>>>> f8fc3fe58beebecc9c1b083b9e956716429c1795
 function App() {
   const dispatch = useDispatch()
 
@@ -72,6 +90,7 @@ function App() {
   return (
     <div className='App'>
       <div>
+<<<<<<< HEAD
         {/* Drawer & Header */}
         <Header />
 
@@ -87,9 +106,24 @@ function App() {
         <Box mt={5}>
           <Copyright />
         </Box>
+=======
+        <TopMenuComponent />
+        <ConnectedRouter history={history}>
+          <Route path="/" exact component={Search} />
+          <Route path="/order" component={Order} />
+          <Route path="/dashboard" component={DashboardComponent} />
+          <Route path="/map" component={Search} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+        </ConnectedRouter>
+>>>>>>> f8fc3fe58beebecc9c1b083b9e956716429c1795
       </div>
     </div>
   )
 }
 
+<<<<<<< HEAD
 export default connect(mapStateToProps, mapDispatchToPOrops)(withRouter(App))
+=======
+export default App;
+>>>>>>> f8fc3fe58beebecc9c1b083b9e956716429c1795
