@@ -1,148 +1,100 @@
-import { Component } from "react";
+import React from "react";
 import styled from "styled-components";
-import { Grid } from "./Grid";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as uAc } from "../redux/modules/restaurant";
+import { useState } from "react";
 
-const ENTER_KEY = 13;
-const COMMA_KEY = 188;
-const BACKSPACE_KEY = 8;
+export const Tags = (tag) => {
+  const restaurant = useSelector((state) => state.restaurant);
 
-class Tags extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { tags: ["데이트코스", "맛집", "먹방"], value: "" };
+  const dispatch = useDispatch();
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyUp = this.handleKeyUp.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
+  const ENTER_KEY = 13;
+  const COMMA_KEY = 188;
+  const BACKSPACE_KEY = 8;
+  const [tagValue, setTagValue] = useState("");
 
-  handleChange(e) {
-    this.setState({
-      value: e.target.value,
-    });
-  }
-
-  handleKeyUp(e) {
+  const handleKeyUp = (e) => {
     const key = e.keyCode;
-
     if (key === ENTER_KEY || key === COMMA_KEY) {
-      this.addTag();
+      dispatch(uAc.addTag(tagValue.trim().replace(/,/g, "")));
+      setTagValue((e.target.value = ""));
     }
-  }
+  };
 
-  handleKeyDown(e) {
-    const key = e.keyCode;
-    if (key === BACKSPACE_KEY && !this.state.value) {
-      this.editPrevTag();
+  const handleKeyDown = (e) => {
+    if (e.keyCode === BACKSPACE_KEY) {
+      dispatch(uAc.removeTag());
     }
-  }
+  };
 
-  addTag() {
-    const { tags, value } = this.state;
-    let tag = value.trim();
-
-    tag = tag.replace(/,/g, "");
-
-    if (!tag) {
-      return;
-    }
-
-    this.setState({
-      tags: [...tags, tag],
-      value: "",
-    });
-  }
-
-  editPrevTag() {
-    let { tags } = this.state;
-
-    const tag = tags.pop();
-
-    this.setState({ tags, value: tag });
-  }
-
-  render() {
-    const { tags, value } = this.state;
-    return (
-      <Grid is_flex>
-        <TagForm>
-          <TagList>
-            <ul>
-              {tags.map((tag, i) => (
-                <Tag key={tag + i}>{tag}</Tag>
-              ))}
-            </ul>
-            <TagInput
-              type="text"
-              placeholder="태그 입력하기"
-              value={value}
-              onChange={this.handleChange}
-              ref="tag"
-              onKeyUp={this.handleKeyUp}
-              onKeyDown={this.handleKeyDown}
-            />
-          </TagList>
-          <Small>
-            태그하고 싶은 단어를 쓰고 <Code>엔터</Code> 나 <Code>❟</Code> 를
-            입력하고 🔙 로 지울 수 있어요.
-          </Small>
-        </TagForm>
-      </Grid>
-    );
-  }
-}
-
-export default Tags;
+  return (
+    <TagForm>
+      <Tag>
+        <ul>
+          {restaurant.info.tags.map((tag, index) => (
+            <li key={index}>{tag}</li>
+          ))}
+        </ul>
+        <input
+          type="text"
+          placeholder="태그를 입력하세요"
+          onChange={(e) => {
+            setTagValue(e.target.value);
+          }}
+          onKeyUp={handleKeyUp}
+          onKeyDown={handleKeyDown}
+        />
+      </Tag>
+      <Small>
+        태그하고 싶은 단어를 쓰고 <code>엔터</code> 나 <code>,</code> 를
+        입력하세요 <code>←</code> 로 지울 수 있어요.
+      </Small>
+    </TagForm>
+  );
+};
 
 const TagForm = styled.div`
+  top: 8%;
+  left: 50%;
+  width: 100%;
+  min-width: 700px;
   font-size: 16px;
   color: #222;
   background: #ecf0f1;
 `;
 
-const TagList = styled.div`
-  > ul {
-    list-style: none;
-  }
+const Tag = styled.div`
   background: #fff;
   padding: 5px;
   overflow: hidden;
-`;
-
-const Tag = styled.li`
-  color: #fff;
-  font-weight: bold;
-  background: #3498db;
-  float: left;
-  padding: 5px 10px;
-  border-radius: 10em;
-  margin: 5px;
-
-  button {
-    background: transparent;
+  input {
+    padding: 5px 10px;
+    box-sizing: border-box;
+    color: #7f8c8d;
     border: 0;
-    cursor: pointer;
+    float: left;
+    margin: 10px 0;
+    font-size: 16px;
+    outline: 0;
   }
-`;
-
-const TagInput = styled.input`
-  padding: 5px 10px;
-  box-sizing: border-box;
-  color: #7f8c8d;
-  border: 0;
-  float: left;
-  margin: 10px 0;
-  font-size: 16px;
-  outline: 0;
-`;
-
-const Code = styled.code`
-  font-size: 12px;
-  background: #fcf8d0;
-  display: inline-block;
-  font-family: courier;
-  padding: 4px 6px;
-  border-radius: 4px;
+  ul {
+    list-style: none;
+    li {
+      color: #fff;
+      font-weight: bold;
+      background: #3498db;
+      float: left;
+      padding: 5px 10px;
+      border-radius: 10em;
+      margin: 5px;
+      button {
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+      }
+    }
+  }
 `;
 
 const Small = styled.small`
