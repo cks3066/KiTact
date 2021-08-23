@@ -1,27 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Grid } from "../elements/Grid";
 import { Image } from "../elements/Image";
 import { useDispatch } from "react-redux";
-import { calculate, decrement, increment } from "../redux/modules/menu";
+import { actionCreators as uAc } from "../redux/modules/restaurant";
 
 export const Menu = ({ menu }) => {
   const dispatch = useDispatch();
 
   const increaseQuantity = () => {
-    dispatch(increment(menu.id));
-    const menu_flag = {
-      id: menu.id,
-    };
-    dispatch(calculate(menu_flag));
+    console.log("menu", menu);
+    dispatch(uAc.incrementMenuQuantity(menu.id));
+    dispatch(uAc.calculateTotalPrice(menu.id));
   };
 
   const decreaseQuantity = () => {
-    dispatch(decrement(menu.id));
-    const menu_flag = {
-      id: menu.id,
-    };
-    dispatch(calculate(menu_flag));
+    dispatch(uAc.decrementMenuQuantity(menu.id));
+    dispatch(uAc.calculateTotalPrice(menu.id));
   };
 
   return (
@@ -89,7 +84,6 @@ const MenuPanel = styled.p`
 `;
 
 const QuantityInput = styled.div`
-  //box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   border-radius: 3px;
   width: 10%;
   height: 100%;
