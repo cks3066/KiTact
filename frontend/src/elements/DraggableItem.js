@@ -1,55 +1,60 @@
-import React, { useState, useRef } from "react";
-import Draggable from "react-draggable";
-import { useDispatch, useSelector } from "react-redux";
-import styled, { keyframes } from "styled-components";
-import { actionCreators as uAc } from "../redux/modules/restaurant";
+import React, { useState, useRef } from 'react'
+import Draggable from 'react-draggable'
+import { useDispatch, useSelector } from 'react-redux'
+import styled, { keyframes } from 'styled-components'
+import { actionCreators as uAc } from '../redux/modules/restaurant'
 
-export const DraggableItem = (props) => {
-  const restaurant = useSelector((state) => state.restaurant);
+export const DraggableItem = props => {
+  const restaurant = useSelector(state => state.restaurant)
+  const [Opacity, setOpacity] = useState(false)
 
-  const dispatch = useDispatch();
-  const nodeRef = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const dispatch = useDispatch()
+  const nodeRef = useRef(null)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
 
-  const trackPos = (data) => {
-    setPosition({ x: data.x, y: data.y });
-  };
-
-  const handleEnd = (seat) => {
+  const trackPos = data => {
+    setPosition({ x: data.x, y: data.y })
+  }
+  const handleStart = () => {
+    setOpacity(true)
+  }
+  const handleEnd = seat => {
+    setOpacity(false)
     const seat_info = {
       id: props.id,
       vacancy: props.vacancy,
       x: position.x.toFixed(),
       y: position.y.toFixed(),
-    };
-    dispatch(uAc.updateSeat(seat_info));
-  };
+    }
+    dispatch(uAc.updateSeat(seat_info))
+  }
 
-  const updateSeat = (seat) => {
+  const updateSeat = seat => {
     const seat_info = {
       id: props.id,
       vacancy: !props.vacancy,
       x: position.x.toFixed(),
       y: position.y.toFixed(),
-    };
-    dispatch(uAc.updateSeat(seat_info));
-  };
+    }
+    dispatch(uAc.updateSeat(seat_info))
+  }
 
   const removeSeat = () => {
-    dispatch(uAc.removeSeat({ id: props.id }));
-  };
+    dispatch(uAc.removeSeat(props.id))
+  }
 
   return (
     <Draggable
       disabled={restaurant.info.seat_edit_toggle}
       nodeRef={nodeRef}
       onDrag={(e, data) => trackPos(data)}
+      onStart={handleStart}
       onStop={handleEnd}
       defaultPosition={{ x: props.x, y: props.y }}
     >
-      <Item>
+      <Item opacity={Opacity}>
         <div onClick={updateSeat} ref={nodeRef}>
-          {isNaN(props.id) ? "" : props.vacancy ? "🍽" : "🍴"}
+          {props.type === 'seat' ? (props.vacancy ? '🍽' : '🍴') : ''}
         </div>
         {props.icon}
         <HideButtonSet>
@@ -59,8 +64,8 @@ export const DraggableItem = (props) => {
         </HideButtonSet>
       </Item>
     </Draggable>
-  );
-};
+  )
+}
 
 const bounce = keyframes`
   0% {
@@ -69,7 +74,7 @@ const bounce = keyframes`
   100% {
     transform: scale(1)
   }
-`;
+`
 
 const HideButton = styled.button`
   display: none;
@@ -85,9 +90,10 @@ const HideButton = styled.button`
   :nth-child(2) {
     top: 10px;
   }
-`;
+`
 
 const Item = styled.div`
+  position: absolute;
   width: 50px;
   height: 50px;
   max-width: 50px;
@@ -100,6 +106,7 @@ const Item = styled.div`
   text-align: center;
   vertical-align: middle;
   font-size: 30px;
+  opacity: ${props => (props.opacity ? '0.6' : '1')};
   :hover {
     font-size: 32px;
     ${HideButton} {
@@ -107,7 +114,7 @@ const Item = styled.div`
       animation: ${bounce} 1s;
     }
   }
-`;
+`
 
 const HideButtonSet = styled.div`
   position: absolute;
@@ -115,4 +122,4 @@ const HideButtonSet = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
+`

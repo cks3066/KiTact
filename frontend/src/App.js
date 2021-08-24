@@ -15,11 +15,10 @@ import { apiKey } from './shared/Firebase'
 import { actionCreators as userActions } from './redux/modules/user'
 import { useDispatch } from 'react-redux'
 
-import { history } from "./redux/configStore";
-import { Order } from "./pages/Order";
+import { history } from './redux/configStore'
+import { Order } from './pages/Order'
 
 import Header from './component/Header'
-
 
 function Copyright() {
   return (
@@ -40,9 +39,8 @@ function App() {
     if (is_session) {
       dispatch(userActions.loginCheckFB())
     }
-  }, []);
-
-  <Connect />
+  }, [])
+  ;<Connect />
   return (
     <div className='App'>
       <div>
@@ -50,11 +48,11 @@ function App() {
         <Header />
         <ConnectedRouter history={history}>
           <Route path='/' exact component={Search} />
-          <Route path='/menulist' exact component={Restaurant} />
+          <Route path='/reservation' exact component={Restaurant} />
           <Route path='/map' exact component={Search} />
           <Route path='/login' exact component={Login} />
           <Route path='/signup' exact component={Signup} />
-          <Route path="/order" component={Order} />
+          <Route path='/order' component={Order} />
         </ConnectedRouter>
 
         {/* Footer */}
@@ -66,4 +64,4 @@ function App() {
   )
 }
 
-export default App;
+export default App

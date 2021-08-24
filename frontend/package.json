@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
     "connected-react-router": "6.8.0",
+    "firebase": "^8.10.0",
     "history": "4.10.1",
     "immer": "^9.0.5",
     "jquery": "^3.6.0",

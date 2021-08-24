@@ -115,7 +115,7 @@ export default function Header() {
 
   const clickReservation = () => {
     setOpen(false)
-    history.push('/menulist')
+    history.push('/reservation')
   }
 
   return (
