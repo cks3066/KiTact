@@ -137,7 +137,7 @@ export default function Header() {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
-        color='secondary'
+        color='primary'
         position='fixed'
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
@@ -158,7 +158,7 @@ export default function Header() {
           </Typography>
           <div className={classes.right}>
             <div className={classes.button}>
-              <Button variant='contained' color='secondary'>
+              <Button variant='contained' color='primary'>
                 로그인
               </Button>
             </div>
