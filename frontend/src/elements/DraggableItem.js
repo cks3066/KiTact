@@ -6,7 +6,7 @@ import { actionCreators as uAc } from '../redux/modules/restaurant'
 
 export const DraggableItem = props => {
   const restaurant = useSelector(state => state.restaurant)
-  const [Opacity, setOpacity] = useState(false)
+  const [opacity, setOpacity] = useState(0)
 
   const dispatch = useDispatch()
   const nodeRef = useRef(null)
@@ -16,10 +16,10 @@ export const DraggableItem = props => {
     setPosition({ x: data.x, y: data.y })
   }
   const handleStart = () => {
-    setOpacity(true)
+    setOpacity(0.6)
   }
   const handleEnd = seat => {
-    setOpacity(false)
+    setOpacity(0)
     const seat_info = {
       id: props.id,
       vacancy: props.vacancy,
@@ -52,13 +52,14 @@ export const DraggableItem = props => {
       onStop={handleEnd}
       defaultPosition={{ x: props.x, y: props.y }}
     >
-      <Item opacity={Opacity}>
+      <Item opacity={opacity}>
         <div onClick={updateSeat} ref={nodeRef}>
-          {props.type === 'seat' ? (props.vacancy ? '🍽' : '🍴') : ''}
+          {props.type === 'seat' ? (props.vacancy ? '🍴' : '🍽') : ''}
         </div>
         {props.icon}
+        <TableDisplay>{props.type === 'seat' ? props.people + '인' : ''}</TableDisplay>
+        <Client>{props.type === 'seat' ? (props.client ? props.client : '예약하기') : ''}</Client>
         <HideButtonSet>
-          <HideButton>✔</HideButton>
           <HideButton>⚙</HideButton>
           <HideButton onClick={removeSeat}>❌</HideButton>
         </HideButtonSet>
@@ -118,8 +119,14 @@ const Item = styled.div`
 
 const HideButtonSet = styled.div`
   position: absolute;
-  left: -10;
   display: flex;
   align-items: center;
   justify-content: space-between;
+`
+const Client = styled.div`
+  font-size: 15px;
+`
+
+const TableDisplay = styled.div`
+  font-size: 15px;
 `
