@@ -2,7 +2,6 @@ package com.kitact.controller;
 
 import com.kitact.data.model.User;
 import com.kitact.data.response.BaseResponse;
-import com.kitact.naver.NaverClient;
 import com.kitact.repository.RestaurantRepository;
 import com.kitact.service.ResponseService;
 import com.kitact.service.RestaurantService;
@@ -26,8 +25,8 @@ public class RestaurantController {
     // 식당 검색
     @GetMapping("/search")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'OWNER')")
-    public RestaurantDto search(@RequestParam String query) {
-        return restaurantService.search(query);
+    public BaseResponse search(@RequestParam String query) {
+        return responseService.getSingleResponse(restaurantService.search(query));
     }
 
     // 식당 data 전체 불러오기
@@ -76,10 +75,6 @@ public class RestaurantController {
             throw new IllegalArgumentException("일치하는 회원 정보가 없습니다. 확인해주세요.");
         }
         return responseService.getSuccessResponse();
-
-    @GetMapping("/search")
-    public BaseResponse search(@RequestParam String query) {
-        return responseService.getSingleResponse(restaurantService.search(query));
     }
 }
 
