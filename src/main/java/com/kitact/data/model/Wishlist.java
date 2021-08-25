@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tb_wishlist")
 public class Wishlist extends Timestamped {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long wishlist_id;
@@ -20,6 +19,8 @@ public class Wishlist extends Timestamped {
     @ManyToOne
     @JoinColumn(nullable = false, insertable = false, updatable = false)
     private User user_id;
+
+
 
     public Wishlist(User user_id) {
         this.user_id = user_id;
