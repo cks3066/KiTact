@@ -23,6 +23,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import AssignmentIcon from '@material-ui/icons/Assignment'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Navbar } from 'react-bootstrap'
+import Button from '@material-ui/core/Button'
 
 import { history } from '../redux/configStore'
 
@@ -31,6 +32,7 @@ const drawerWidth = 180
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    position: 'relative',
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
@@ -65,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex',
   },
   content: {
     flexGrow: 1,
@@ -82,6 +84,19 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
+  },
+  right: {
+    marginLeft: 'auto',
+  },
+  button: {
+    display: 'inline-block',
+    margin: '0.5rem',
+  },
+  title: {
+    position: 'absolute',
+    left: '50%',
+    marginLeft: '-360px',
+    width: '720px',
   },
 }))
 
@@ -122,6 +137,7 @@ export default function Header() {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
+        color='secondary'
         position='fixed'
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
@@ -137,9 +153,21 @@ export default function Header() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h4' noWrap>
-            KiTact
+          <Typography variant='h4' noWrap className={classes.title}>
+         키택트
           </Typography>
+          <div className={classes.right}>
+            <div className={classes.button}>
+              <Button variant='contained' color='secondary'>
+                로그인
+              </Button>
+            </div>
+            {/* <div className={classes.button}>
+              <Button variant='contained' color='secondary'>
+                로그아웃
+              </Button>
+            </div> */}
+          </div>
         </Toolbar>
       </AppBar>
 

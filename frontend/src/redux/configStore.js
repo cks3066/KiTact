@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history'
 import { connectRouter } from 'connected-react-router'
 
 import User from './modules/user'
-
+import Search from './modules/search'
 // 리덕스 모듈 등록
 import Restaurant from './modules/restaurant'
 
@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
   restaurant: Restaurant,
   user: User,
   router: connectRouter(history),
+  search: Search,
 })
 
 // axios → then → history 절차적 경로 제공
