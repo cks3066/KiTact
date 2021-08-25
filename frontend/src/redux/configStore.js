@@ -3,10 +3,11 @@ import thunk from 'redux-thunk'
 import { createBrowserHistory } from 'history'
 import { connectRouter } from 'connected-react-router'
 
+// 리덕스 모듈 등록
 import User from './modules/user'
 import Search from './modules/search'
-// 리덕스 모듈 등록
 import Restaurant from './modules/restaurant'
+import Image from './modules/image'
 
 // 컴포넌트 이동 경로: ex) 뒤로가기
 export const history = createBrowserHistory()
@@ -15,6 +16,7 @@ export const history = createBrowserHistory()
 const rootReducer = combineReducers({
   restaurant: Restaurant,
   user: User,
+  image: Image,
   router: connectRouter(history),
   search: Search,
 })
@@ -35,8 +37,8 @@ if (env === 'development') {
 // 리덕스 개발자 도구 설정
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-  : compose;
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+    : compose
 
 // 미들웨어에 리덕스 개발자 도구 적용
 const enhancer = composeEnhancers(applyMiddleware(...middlewares))
