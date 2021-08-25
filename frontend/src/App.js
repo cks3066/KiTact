@@ -39,11 +39,12 @@ function App() {
     if (is_session) {
       dispatch(userActions.loginCheckFB())
     }
-  }, [])
-  ;<Connect />
+  }, []);
+
   return (
     <div className='App'>
       <div>
+      <Connect />
         {/* Drawer & Header */}
         <Header />
         <ConnectedRouter history={history}>

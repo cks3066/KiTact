@@ -11,8 +11,9 @@ const RestaurantSearch = () => {
   const [items, setItems] = useState();
 
   const handleButton = async () => {
+    console.log("검색");
     try {
-      const res = await axios.get("http://localhost:3000/naver/getNaverMovie", {
+      const res = await axios.get("http://localhost:3000/naver/getRestaurant", {
         params: {
           query: query,
         },
@@ -34,7 +35,6 @@ const RestaurantSearch = () => {
           onSearch={(value) => console.log(value)}
           onChange={handleQuery}
           onClick={handleButton}
-          style={{ width: 200 }}
         />
     </Fragment>
   );
