@@ -1,4 +1,4 @@
-package com.kitact.intergration;
+package com.kitact.Integration;
 
 
 import com.kitact.repository.UserRepository;
