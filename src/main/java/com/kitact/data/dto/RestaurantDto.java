@@ -1,23 +1,26 @@
 package com.kitact.data.dto;
 
 import com.kitact.data.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class RestaurantDto {
     private String restaurant_name;
-    private String tag;
-    private String address;
-    private String telephone;
-    private String openinghours;
-    private String big_category;
+    private String large_category;
+    private String medium_category;
     private String small_category;
-    private Double lat;
-    private Double lng;
+    private String img;
+    private String address;
+    private String tel;
+    private String time;
+    private String detail;
+    private String tags;
+    private Integer lng;
+    private Integer lat;
+    private Integer total_seat_count;
+    private Integer vacancy;
 }
