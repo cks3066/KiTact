@@ -19,7 +19,6 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -35,6 +34,13 @@ public class RestaurantController {
     private final ResponseService responseService;
 
     // 식당 검색
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'OWNER')")
+    public RestaurantDto search(@RequestParam String query) {
+        return restaurantService.search(query);
+    }
+
+    // 식당 data 전체 불러오기
     @GetMapping("/show")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'OWNER')")
     BaseResponse all() {
@@ -77,7 +83,7 @@ public class RestaurantController {
     @Secured("ROLE_OWNER")
     public BaseResponse patch(@PathVariable("restaurant_id") long restaurant_id, @RequestBody RestaurantDto restaurantDto) {
         if (restaurantService.patch(restaurant_id, restaurantDto) < 0) {
-            throw new IllegalArgumentException("일치하는 회원 정보가 없습니다. 확인해주세요.");
+            throw new IllegalArgumentException("일치하는 회원 정보가 없습니다. 확인해주세요.")
         }
         return responseService.getSuccessResponse();
     }

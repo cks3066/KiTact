@@ -1,6 +1,5 @@
 package com.kitact.data.dto;
 
-import com.kitact.data.model.User;
 import lombok.*;
 
 @Getter
