@@ -27,8 +27,8 @@ public class SearchLocalResponseDTO {
         private String telephone;
         private String address;
         private String roadAddress;
-        private Double mapx;
-        private Double mapy;
+        private Integer mapX;
+        private Integer mapY;
     }
 
     @Override

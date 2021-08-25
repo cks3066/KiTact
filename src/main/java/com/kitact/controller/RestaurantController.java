@@ -32,7 +32,6 @@ import java.util.Map;
 public class RestaurantController {
     private final RestaurantRepository restaurantRepository;
     private final RestaurantService restaurantService;
-    private final NaverSearchService naverSearchService;
     private final ResponseService responseService;
 
     // 식당 검색
@@ -85,9 +84,7 @@ public class RestaurantController {
 
     @GetMapping("/search")
     public BaseResponse search(@RequestParam String query) {
-        SearchLocalRequestDTO searchLocalRequestDTO = new SearchLocalRequestDTO();
-        searchLocalRequestDTO.setQuery(query);
-        return responseService.getSingleResponse(naverSearchService.localSearch(searchLocalRequestDTO));
+        return responseService.getSingleResponse(restaurantService.search(query));
     }
 }
 
