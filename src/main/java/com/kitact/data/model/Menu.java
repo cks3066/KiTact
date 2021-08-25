@@ -18,7 +18,11 @@ public class Menu extends Timestamped {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+    @Column
+    private String src;
 
     @Column(nullable = false)
     private String menu_name;
@@ -26,8 +30,8 @@ public class Menu extends Timestamped {
     @Column(nullable = false)
     private Long menu_price;
 
-    public Menu(Restaurant restaurant_id, String menu_name, Long menu_price) {
-        this.restaurant = restaurant_id;
+    public Menu(String src, String menu_name, Long menu_price) {
+        this.src = src;
         this.menu_name = menu_name;
         this.menu_price = menu_price;
     }
