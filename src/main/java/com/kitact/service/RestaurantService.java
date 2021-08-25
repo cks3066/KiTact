@@ -1,52 +1,45 @@
 package com.kitact.service;
 
-import com.kitact.data.dto.SearchImageReqDto;
-import com.kitact.data.dto.SearchReqDto;
-import com.kitact.data.dto.SearchResDto;
+import com.kitact.data.dto.*;
 import com.kitact.data.model.User;
 import com.kitact.data.model.Restaurant;
-import com.kitact.naver.NaverClient;
 import com.kitact.repository.UserRepository;
 import com.kitact.repository.RestaurantRepository;
-import com.kitact.data.dto.RestaurantDto;
-import lombok.AllArgsConstructor;
-import lombok.var;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class RestaurantService {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
-    private final NaverClient naverClient;
+    private final NaverSearchService naverSearchService;
 
     // 식당 검색
     public RestaurantDto search(String query) {
         // 지역 검색
-        var searchLocalReq = new SearchReqDto();
-        searchLocalReq.setQuery(query);
+        SearchLocalRequestDTO searchLocalRequestDTO = new SearchLocalRequestDTO();
+        searchLocalRequestDTO.setQuery(query);
 
-        var searchLocalRes = naverClient.localSearch(searchLocalReq);
-        if(searchLocalRes.getTotal() > 0) {
-            var localItem = searchLocalRes.getItems().stream().findFirst().get();
+        SearchLocalResponseDTO searchLocalResponseDTO = naverSearchService.localSearch(searchLocalRequestDTO);
+        if(searchLocalResponseDTO.getTotal() > 0) {
+            SearchLocalResponseDTO.SearchLocalItem localItem = searchLocalResponseDTO.getItems().stream().findFirst().get();
 
             // 이미지 검색
-            var imageQuery = localItem.getTitle().replaceAll("<[^>]*>", "");
-            var searchImageReq = new SearchImageReqDto();
-            searchImageReq.setQuery(imageQuery);
+            String imageQuery = localItem.getTitle().replaceAll("<[^>]*>", "");
+            SearchImageRequestDTO searchImageRequestDTO = new SearchImageRequestDTO();
+            searchImageRequestDTO.setQuery(imageQuery);
 
-            var searchImageRes = naverClient.searchImage(searchImageReq);
+            SearchImageResponseDTO searchImageResponseDTO = naverSearchService.imageSearch(searchImageRequestDTO);
 
-            if (searchImageRes.getTotal() > 0) {
-                var imageItem = searchImageRes.getItems().stream().findFirst().get();
+            if (searchImageResponseDTO.getTotal() > 0) {
+                SearchImageResponseDTO.SearchImageItem imageItem = searchImageResponseDTO.getItems().stream().findFirst().get();
                 // 결과를 리턴
-                var restaurant = new RestaurantDto();
+                RestaurantDto restaurant = new RestaurantDto();
                 restaurant.setRestaurant_name(localItem.getTitle());
                 restaurant.setLarge_category("식당");
                 restaurant.setMedium_category(localItem.getCategory().split(">")[0]);
@@ -55,8 +48,8 @@ public class RestaurantService {
                 restaurant.setAddress(localItem.getAddress());
                 restaurant.setTel(localItem.getTelephone());
                 restaurant.setDetail(localItem.getDescription());
-                restaurant.setLng(localItem.getMapx());
-                restaurant.setLat(localItem.getMapy());
+                restaurant.setLng(localItem.getMapX());
+                restaurant.setLat(localItem.getMapY());
 
                 return restaurant;
             }
@@ -79,7 +72,6 @@ public class RestaurantService {
         restaurant.setDetail(restaurantDto.getDetail());
         restaurant.setLng(restaurantDto.getLng());
         restaurant.setLat(restaurantDto.getLat());
-
         restaurant.setTime(restaurantDto.getTime());
         restaurant.setTags(restaurantDto.getTags());
         restaurant.setTotal_seat_count(restaurantDto.getTotal_seat_count());

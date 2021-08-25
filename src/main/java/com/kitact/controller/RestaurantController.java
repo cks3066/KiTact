@@ -77,14 +77,9 @@ public class RestaurantController {
         }
         return responseService.getSuccessResponse();
 
+    @GetMapping("/search")
+    public BaseResponse search(@RequestParam String query) {
+        return responseService.getSingleResponse(restaurantService.search(query));
     }
 }
-
-//    @GetMapping("/search")
-//    public BaseResponse search(@RequestParam String query) {
-//        SearchLocalRequestDTO searchLocalRequestDTO = new SearchLocalRequestDTO();
-//        searchLocalRequestDTO.setQuery(query);
-//        return responseService.getSingleResponse(naverSearchService.localSearch(searchLocalRequestDTO));
-//    }
-//}
 
