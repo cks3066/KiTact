@@ -1,8 +1,12 @@
 package com.kitact.controller;
 
+import com.kitact.data.dto.SearchLocalRequestDTO;
 import com.kitact.data.model.Restaurant;
 import com.kitact.data.model.User;
+import com.kitact.data.response.BaseResponse;
 import com.kitact.repository.RestaurantRepository;
+import com.kitact.service.NaverSearchService;
+import com.kitact.service.ResponseService;
 import com.kitact.service.RestaurantService;
 import com.kitact.data.dto.RestaurantDto;
 import com.kitact.configuration.security.UserDetailsImpl;
@@ -23,80 +27,67 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/restaurant")
 public class RestaurantController {
     private final RestaurantRepository restaurantRepository;
     private final RestaurantService restaurantService;
-
-    @Autowired
-    public RestaurantController(RestaurantRepository restaurantRepository, RestaurantService restaurantService) {
-        this.restaurantRepository = restaurantRepository;
-        this.restaurantService = restaurantService;
-    }
+    private final NaverSearchService naverSearchService;
+    private final ResponseService responseService;
 
     // 식당 검색
     @GetMapping("/show")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'OWNER')")
-    List<Restaurant> all() {
-        return restaurantRepository.findAll();
+    BaseResponse all() {
+        return responseService.getMultiResponse(restaurantRepository.findAll());
     }
 
     // 식당 등록
     @PostMapping("/enroll")
     @PreAuthorize("hasRole('OWNER')")
     @Secured("ROLE_OWNER")
-    public String enroll(
-            Authentication authentication,
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody RestaurantDto restaurantDTO) throws AuthenticationException {
-        if (userDetails == null) {
-            throw new InternalAuthenticationServiceException("Authentication is null");
-        }
+    public BaseResponse enroll(Authentication authentication, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody RestaurantDto restaurantDTO) {
+        User user = userDetails.getUser();
         String user_role = authentication.getAuthorities().toString();
+
+        if (user == null) {
+            throw new IllegalArgumentException("일치하는 회원 정보가 없습니다. 확인해주세요.");
+        }
         if (user_role != null && user_role.equals("ROLE_OWNER")) {
-            throw new BadCredentialsException("Role is different");
+            throw new IllegalArgumentException("관리자 권한이 필요합니다.");
         }
-        else {
-            User user = userDetails.getUser();
-            restaurantService.enroll(user, restaurantDTO);
-        }
-        return "redirect:/";
+
+        restaurantService.enroll(user, restaurantDTO);
+        return responseService.getSingleResponse(user);
     }
 
     // 식당 삭제
-    @DeleteMapping("/delete/{restaurant_id}")
+    @DeleteMapping("/{restaurant_id}")
     @PreAuthorize("hasRole('OWNER')")
     @Secured("ROLE_OWNER")
-    public Map<String, Object> delete(@PathVariable("restaurant_id") long restaurant_id,
-                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Map<String, Object> response = new HashMap<>();
-
-        if (restaurantService.delete(restaurant_id) > 0) {
-            response.put("result", "SUCCESS");
-        } else {
-            response.put("result", "FAIL");
-            response.put("reason", "일치하는 회원 정보가 없습니다. 확인해주세요.");
+    public BaseResponse delete(@PathVariable("restaurant_id") long restaurant_id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (restaurantService.delete(restaurant_id) < 0) {
+            throw new IllegalArgumentException("일치하는 회원 정보가 없습니다. 확인해주세요.");
         }
-
-        return response;
+        return responseService.getSuccessResponse();
     }
 
     // 식당 수정
-    @PatchMapping("/patch/{restaurant_id}")
+    @PatchMapping("/{restaurant_id}")
     @PreAuthorize("hasRole('OWNER')")
     @Secured("ROLE_OWNER")
-    public Map<String, Object> patch(@PathVariable("restaurant_id") long restaurant_id,
-                                     @RequestBody RestaurantDto restaurantDto) {
-        Map<String, Object> response = new HashMap<>();
-
-        if (restaurantService.patch(restaurant_id, restaurantDto) > 0) {
-            response.put("result", "SUCCESS");
-        } else {
-            response.put("result", "FAIL");
-            response.put("reason", "일치하는 회원 정보가 없습니다. 확인해주세요.");
+    public BaseResponse patch(@PathVariable("restaurant_id") long restaurant_id, @RequestBody RestaurantDto restaurantDto) {
+        if (restaurantService.patch(restaurant_id, restaurantDto) < 0) {
+            throw new IllegalArgumentException("일치하는 회원 정보가 없습니다. 확인해주세요.");
         }
+        return responseService.getSuccessResponse();
+    }
 
-        return response;
+    @GetMapping("/search")
+    public BaseResponse search(@RequestParam String query) {
+        SearchLocalRequestDTO searchLocalRequestDTO = new SearchLocalRequestDTO();
+        searchLocalRequestDTO.setQuery(query);
+        return responseService.getSingleResponse(naverSearchService.localSearch(searchLocalRequestDTO));
     }
 }
 
