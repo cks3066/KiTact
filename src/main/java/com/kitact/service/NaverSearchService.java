@@ -1,5 +1,7 @@
 package com.kitact.service;
 
+import com.kitact.data.dto.SearchImageRequestDTO;
+import com.kitact.data.dto.SearchImageResponseDTO;
 import com.kitact.data.dto.SearchLocalRequestDTO;
 import com.kitact.data.dto.SearchLocalResponseDTO;
 import lombok.AllArgsConstructor;
@@ -51,7 +53,24 @@ public class NaverSearchService {
         return responseEntity.getBody();
     }
 
-    public void imageSearch() {
+    public SearchImageResponseDTO imageSearch(SearchImageRequestDTO searchImageRequestDTO) {
+        URI uri = UriComponentsBuilder
+                .fromUriString(imageSearchUrl)
+                .queryParams(searchImageRequestDTO.toMultiValueMap())
+                .build()
+                .encode()
+                .toUri();
 
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-Naver-Client-Id", clientId);
+        headers.set("X-Naver-Client-Secret", secret);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        ParameterizedTypeReference<SearchImageResponseDTO> typeReference = new ParameterizedTypeReference<>() {};
+
+        ResponseEntity<SearchImageResponseDTO> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, requestEntity, typeReference);
+        return responseEntity.getBody();
     }
 }
