@@ -1,29 +1,19 @@
 package com.kitact.controller;
 
-import com.kitact.data.dto.SearchLocalRequestDTO;
-import com.kitact.data.model.Restaurant;
 import com.kitact.data.model.User;
 import com.kitact.data.response.BaseResponse;
+import com.kitact.naver.NaverClient;
 import com.kitact.repository.RestaurantRepository;
-import com.kitact.service.NaverSearchService;
 import com.kitact.service.ResponseService;
 import com.kitact.service.RestaurantService;
 import com.kitact.data.dto.RestaurantDto;
 import com.kitact.configuration.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +21,6 @@ import java.util.Map;
 public class RestaurantController {
     private final RestaurantRepository restaurantRepository;
     private final RestaurantService restaurantService;
-    private final NaverSearchService naverSearchService;
     private final ResponseService responseService;
 
     // 식당 검색
@@ -84,16 +73,18 @@ public class RestaurantController {
     @Secured("ROLE_OWNER")
     public BaseResponse patch(@PathVariable("restaurant_id") long restaurant_id, @RequestBody RestaurantDto restaurantDto) {
         if (restaurantService.patch(restaurant_id, restaurantDto) < 0) {
-            throw new IllegalArgumentException("일치하는 회원 정보가 없습니다. 확인해주세요.")
+            throw new IllegalArgumentException("일치하는 회원 정보가 없습니다. 확인해주세요.");
         }
         return responseService.getSuccessResponse();
-    }
 
-    @GetMapping("/search")
-    public BaseResponse search(@RequestParam String query) {
-        SearchLocalRequestDTO searchLocalRequestDTO = new SearchLocalRequestDTO();
-        searchLocalRequestDTO.setQuery(query);
-        return responseService.getSingleResponse(naverSearchService.localSearch(searchLocalRequestDTO));
     }
 }
+
+//    @GetMapping("/search")
+//    public BaseResponse search(@RequestParam String query) {
+//        SearchLocalRequestDTO searchLocalRequestDTO = new SearchLocalRequestDTO();
+//        searchLocalRequestDTO.setQuery(query);
+//        return responseService.getSingleResponse(naverSearchService.localSearch(searchLocalRequestDTO));
+//    }
+//}
 
