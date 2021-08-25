@@ -53,7 +53,7 @@ public class RestaurantController {
         }
 
         restaurantService.enroll(user, restaurantDTO);
-        return responseService.getSingleResponse(user);
+        return responseService.getSuccessResponse();
     }
 
     // 식당 삭제
