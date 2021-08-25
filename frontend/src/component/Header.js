@@ -26,7 +26,7 @@ import { Navbar } from 'react-bootstrap'
 
 import { history } from '../redux/configStore'
 
-const drawerWidth = 240
+const drawerWidth = 180
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -120,9 +120,6 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      <Navbar bg='white' variant='white' className='mb-4'>
-        <Navbar.Brand href='/'>-</Navbar.Brand>
-      </Navbar>
       <CssBaseline />
       <AppBar
         position='fixed'

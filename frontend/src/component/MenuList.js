@@ -25,7 +25,7 @@ const TotalPrice = styled.div`
   text-align: center;
   bottom: 0;
   height: 40px;
-  width: 100%;
+  width: 60%;
   background: grey;
   color: white;
 `;

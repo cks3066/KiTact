@@ -24,10 +24,11 @@ import { emailCheck } from '../shared/common'
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: '0px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent : 'center',
   },
   avatar: {
     margin: theme.spacing(1),
@@ -125,6 +126,9 @@ const Login = props => {
               onChange={e => {
                 setPwd(e.target.value)
               }}
+              value={pwd}
+              is_submit
+              onSubmit={login}
             />
 
             <Button
