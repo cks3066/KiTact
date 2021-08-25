@@ -1,58 +1,70 @@
-import React from "react";
-import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as uAc } from "../redux/modules/restaurant";
-import { useState } from "react";
+import React from 'react'
+import styled from 'styled-components'
+import { useDispatch, useSelector } from 'react-redux'
+import { actionCreators as uAc } from '../redux/modules/restaurant'
+import { useState } from 'react'
+import { OwnerPermit } from '../shared/OwnerPermit'
 
-export const Tags = (tag) => {
-  const restaurant = useSelector((state) => state.restaurant);
+export const Tags = tag => {
+  const restaurant = useSelector(state => state.restaurant)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const ENTER_KEY = 13;
-  const COMMA_KEY = 188;
-  const BACKSPACE_KEY = 8;
-  const [tagValue, setTagValue] = useState("");
+  const ENTER_KEY = 13
+  const COMMA_KEY = 188
+  const BACKSPACE_KEY = 8
+  const [tagValue, setTagValue] = useState('')
 
-  const handleKeyUp = (e) => {
-    const key = e.keyCode;
+  const handleKeyUp = e => {
+    const key = e.keyCode
     if (key === ENTER_KEY || key === COMMA_KEY) {
-      dispatch(uAc.addTag(tagValue.trim().replace(/,/g, "")));
-      setTagValue((e.target.value = ""));
+      dispatch(uAc.addTag(tagValue.trim().replace(/,/g, '')))
+      setTagValue((e.target.value = ''))
     }
-  };
+  }
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = e => {
     if (e.keyCode === BACKSPACE_KEY) {
-      dispatch(uAc.removeTag());
+      dispatch(uAc.removeTag())
     }
-  };
+  }
 
   return (
-    <TagForm>
-      <Tag>
-        <ul>
-          {restaurant.info.tags.map((tag, index) => (
-            <li key={index}>{tag}</li>
-          ))}
-        </ul>
-        <input
-          type="text"
-          placeholder="태그를 입력하세요"
-          onChange={(e) => {
-            setTagValue(e.target.value);
-          }}
-          onKeyUp={handleKeyUp}
-          onKeyDown={handleKeyDown}
-        />
-      </Tag>
-      <Small>
-        태그하고 싶은 단어를 쓰고 <code>엔터</code> 나 <code>,</code> 를
-        입력하세요 <code>←</code> 로 지울 수 있어요.
-      </Small>
-    </TagForm>
-  );
-};
+    <OwnerPermit>
+      <TagForm>
+        <Tag>
+          <ul>
+            {restaurant.info.tags.map((tag, index) => (
+              <li key={index}>{tag}</li>
+            ))}
+          </ul>
+          <input
+            type='text'
+            placeholder='태그를 입력하세요'
+            onChange={e => {
+              setTagValue(e.target.value)
+            }}
+            onKeyUp={handleKeyUp}
+            onKeyDown={handleKeyDown}
+          />
+        </Tag>
+        <Small>
+          태그하고 싶은 단어를 쓰고 <code>엔터</code> 나 <code>,</code> 를 입력하세요 <code>←</code>{' '}
+          로 지울 수 있어요.
+        </Small>
+      </TagForm>
+      <TagForm>
+        <Tag>
+          <ul>
+            {restaurant.info.tags.map((tag, index) => (
+              <li key={index}>{tag}</li>
+            ))}
+          </ul>
+        </Tag>
+      </TagForm>
+    </OwnerPermit>
+  )
+}
 
 const TagForm = styled.div`
   top: 8%;
@@ -62,7 +74,7 @@ const TagForm = styled.div`
   font-size: 16px;
   color: #222;
   background: #ecf0f1;
-`;
+`
 
 const Tag = styled.div`
   background: #fff;
@@ -95,7 +107,7 @@ const Tag = styled.div`
       }
     }
   }
-`;
+`
 
 const Small = styled.small`
   color: #7f8c8d;
@@ -111,4 +123,4 @@ const Small = styled.small`
     padding: 4px 6px;
     border-radius: 4px;
   }
-`;
+`

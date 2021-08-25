@@ -1,8 +1,83 @@
 import { createAction, handleActions } from 'redux-actions'
 import { produce } from 'immer'
 
+const category = [
+  {
+    id: 1,
+    text: '식당',
+    list: [
+      {
+        id: 1,
+        text: '한식',
+        list: [
+          { id: 1, text: '백반' },
+          { id: 2, text: '찌개' },
+          { id: 3, text: '정식' },
+          { id: 4, text: '족발/보쌈' },
+        ],
+      },
+      {
+        id: 2,
+        text: '양식',
+        list: [
+          { id: 1, text: '치킨' },
+          { id: 2, text: '피자' },
+          { id: 3, text: '햄버거' },
+        ],
+      },
+      {
+        id: 3,
+        text: '중식',
+        list: [
+          { id: 1, text: '중국집' },
+          { id: 2, text: '코스요리' },
+          { id: 3, text: '짬뽕 전문' },
+        ],
+      },
+      {
+        id: 4,
+        text: '일식',
+        list: [
+          { id: 1, text: '돈까스' },
+          { id: 2, text: '스시' },
+          { id: 3, text: '초밥' },
+        ],
+      },
+      {
+        id: 5,
+        text: '분식',
+        list: [
+          { id: 1, text: '도시락' },
+          { id: 2, text: '야식' },
+          { id: 3, text: '초밥' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    text: '주점',
+    list: [
+      { id: 1, text: '감성주점' },
+      { id: 2, text: '바/칵테일' },
+      { id: 3, text: '포차' },
+    ],
+  },
+  {
+    id: 3,
+    text: '카페/디저트',
+    list: [
+      { id: 1, text: '케익' },
+      { id: 2, text: '커피' },
+      { id: 3, text: '마카롱' },
+    ],
+  },
+]
+
 const initialState = {
+  category: category,
   info: {
+    id: 'asdfqwer',
     large_category: '식당',
     midium_category: '양식',
     small_category: '치킨',
@@ -15,6 +90,7 @@ const initialState = {
     tags: ['데이트코스', '맛집', '먹방', '치킨은안쪄'],
     total_seat_count: 15,
     vacancy_count: 3,
+    owner: '홍길동',
     seats_rull: [
       { id: 1, type: 'seat', icon: '🙋‍♂️', text: '1명' },
       { id: 2, type: 'seat', icon: '👨‍❤️‍👨', text: '2명' },
@@ -38,6 +114,7 @@ const initialState = {
         y: 89,
         people: 3,
         vacancy: true,
+        client: '',
       },
       {
         id: 2,
@@ -47,6 +124,7 @@ const initialState = {
         y: 310,
         people: 4,
         vacancy: true,
+        client: '',
       },
       {
         id: 3,
@@ -56,6 +134,7 @@ const initialState = {
         y: 89,
         people: 1,
         vacancy: false,
+        client: 'Henrietta',
       },
       {
         id: 4,
@@ -65,6 +144,7 @@ const initialState = {
         y: 95,
         people: 2,
         vacancy: false,
+        client: 'Leavitt',
       },
       {
         id: 5,
@@ -74,6 +154,7 @@ const initialState = {
         y: 310,
         people: 2,
         vacancy: true,
+        client: '',
       },
       {
         id: 6,
@@ -83,6 +164,7 @@ const initialState = {
         y: 310,
         people: 3,
         vacancy: true,
+        client: '',
       },
       { id: 7, type: 'door', icon: '🚪', x: 11, y: 10 },
       { id: 8, type: 'checkout', icon: '💰', x: 16, y: 150 },
@@ -136,9 +218,13 @@ const DECREMENT_MENU_QUANTITY = 'DECREMENT_MENU_QUANTITY'
 const ADD_TAG = 'ADD_TAG'
 const REMOVE_TAG = 'REMOVE_TAG'
 const SEAT_EDIT_TOGGLE = 'SEAT_EDIT_TOGGLE'
-const UPDATE_SEAT = 'UPDATE_SEAT'
 const ADD_SEAT = 'ADD_SEAT'
+const UPDATE_SEAT = 'UPDATE_SEAT'
 const REMOVE_SEAT = 'REMOVE_SEAT'
+const UPDATE_ADDRESS = 'UPDATE_ADDRESS'
+const UPDATE_CATEGORY = `UPDATE_CATEGORY`
+const UPDATE_INFO = 'UPDATE_INFO'
+const ADD_MENU = 'ADD_MENU'
 
 const load = createAction(LOAD, restaurant => ({ restaurant }))
 const creat = createAction(CREATE, restaurant => ({ restaurant }))
@@ -159,6 +245,10 @@ const seatEditToggle = createAction(SEAT_EDIT_TOGGLE, seat_edit_toggle => ({
 const updateSeat = createAction(UPDATE_SEAT, seat_info => ({ seat_info }))
 const addSeat = createAction(ADD_SEAT, id => ({ id }))
 const removeSeat = createAction(REMOVE_SEAT, id => ({ id }))
+const updateAddress = createAction(UPDATE_ADDRESS, address => ({ address }))
+const updateCategory = createAction(UPDATE_CATEGORY, category_info => ({ category_info }))
+const updateInfo = createAction(UPDATE_INFO, element => ({ element }))
+const addMenu = createAction(ADD_MENU, menu => ({ menu }))
 
 const calculateSeat = draft => {
   const vacancy_count = draft.info.seats
@@ -248,6 +338,68 @@ export default handleActions(
         if (index !== -1) draft.info.seats.splice(index, 1)
         calculateSeat(draft)
       }),
+    [UPDATE_ADDRESS]: (state, action) =>
+      produce(state, draft => {
+        draft.info.address = action.payload.address
+      }),
+    [UPDATE_CATEGORY]: (state, action) =>
+      produce(state, draft => {
+        const text = action.payload.category_info.text
+        switch (action.payload.category_info.category) {
+          case 'large':
+            draft.info.large_category = text
+            break
+
+          case 'midium':
+            draft.info.midium_category = text
+            break
+
+          case 'small':
+            draft.info.small_category = text
+            break
+
+          default:
+            break
+        }
+      }),
+    [UPDATE_INFO]: (state, action) =>
+      produce(state, draft => {
+        const value = action.payload.element.value
+        switch (action.payload.element.target) {
+          case 'name':
+            draft.info.name = value
+            break
+          case 'img':
+            draft.info.img = value
+            break
+          case 'tel':
+            draft.info.tel = value
+            break
+          case 'time':
+            draft.info.time = value
+            break
+          case 'detail':
+            draft.info.detail = value
+            break
+          case 'owner':
+            draft.info.owner = value
+            break
+
+          default:
+            break
+        }
+      }),
+    [ADD_MENU]: (state, action) =>
+      produce(state, draft => {
+        draft.menu_list.push({
+          id: draft.menu_list.length + 1,
+          src: 'http://www.kyochon.com/uploadFiles/TB_ITEM/%EB%B8%8C%EB%9E%9C%EB%93%9C_list_15-10-221047(3).png',
+          name: action.menu.name,
+          price: action.menu.price,
+          active: false,
+          quantity: 0,
+        })
+      }),
   },
   initialState
 )
@@ -264,6 +416,10 @@ const actionCreators = {
   updateSeat,
   addSeat,
   removeSeat,
+  updateAddress,
+  updateCategory,
+  updateInfo,
+  addMenu,
 }
 
 export { actionCreators }
