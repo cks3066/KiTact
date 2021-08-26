@@ -15,7 +15,7 @@ public class Menu extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long menu_id;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
@@ -29,6 +29,7 @@ public class Menu extends Timestamped {
 
     @Column(nullable = false)
     private Long menu_price;
+
 
     public Menu(String src, String menu_name, Long menu_price) {
         this.src = src;

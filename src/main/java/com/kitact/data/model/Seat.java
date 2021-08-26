@@ -21,19 +21,35 @@ public class Seat extends Timestamped {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(nullable = false)
-    private String location;
+    private String type;
+
+    @Column(nullable = false)
+    private Integer x;
+
+    @Column(nullable = false)
+    private Integer y;
 
     @Column(nullable = false)
     private Integer people;
 
     @Column(nullable = false)
-    private String vacancy;
+    private Boolean vacancy;
+
+    @Column(nullable = false)
+    private String client;
 
 
-    public Seat(String location, Integer people, String vacancy) {
-        this.location = location;
+    public Seat(String type, Integer x, Integer y, Integer people, Boolean vacancy, String client) {
+        this.type = type;
+        this.x = x;
+        this.y = y;
         this.people = people;
         this.vacancy = vacancy;
+        this.client = client;
     }
 }
