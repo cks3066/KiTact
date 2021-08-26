@@ -15,11 +15,14 @@ public class RestaurantDto {
     private String img;
     private String address;
     private String tel;
-    private String time;
+    private String opentime;
+    private String closetime;
+    private String holiday;
     private String detail;
     private String tags;
     private Integer lng;
     private Integer lat;
     private Integer total_seat_count;
-    private Integer vacancy;
+    private Integer vacancy_count;
+    private String owner;
 }
