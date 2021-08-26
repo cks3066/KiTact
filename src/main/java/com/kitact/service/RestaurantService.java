@@ -69,12 +69,20 @@ public class RestaurantService {
         restaurant.setImg(restaurantDto.getImg());
         restaurant.setAddress(restaurantDto.getAddress());
         restaurant.setTel(restaurantDto.getTel());
+        restaurant.setOpentime(restaurantDto.getOpentime());
+        restaurant.setClosetime(restaurantDto.getClosetime());
+        restaurant.setHoliday(restaurantDto.getHoliday());
         restaurant.setDetail(restaurantDto.getDetail());
+        restaurant.setTags(restaurantDto.getTags());
         restaurant.setLng(restaurantDto.getLng());
         restaurant.setLat(restaurantDto.getLat());
-        restaurant.setTime(restaurantDto.getTime());
-        restaurant.setTags(restaurantDto.getTags());
         restaurant.setTotal_seat_count(restaurantDto.getTotal_seat_count());
+        if (restaurantDto.getVacancy_count() != null)
+            restaurant.setVacancy_count(restaurantDto.getVacancy_count());
+        else
+            restaurant.setVacancy_count(restaurantDto.getTotal_seat_count());
+
+        restaurant.setOwner(restaurantDto.getOwner());
 
         return restaurantRepository.save(restaurant);
     }
@@ -97,29 +105,43 @@ public class RestaurantService {
             Restaurant restaurant = found.get();
             if (StringUtils.hasLength(restaurantDto.getRestaurant_name()))
                 restaurant.setRestaurant_name(restaurantDto.getRestaurant_name());
+
             if (StringUtils.hasLength(restaurantDto.getLarge_category()))
                 restaurant.setLarge_category(restaurantDto.getLarge_category());
             if (StringUtils.hasLength(restaurantDto.getMedium_category()))
                 restaurant.setMedium_category(restaurantDto.getMedium_category());
             if (StringUtils.hasLength(restaurantDto.getSmall_category()))
                 restaurant.setSmall_category(restaurantDto.getSmall_category());
+
             if (StringUtils.hasLength(restaurantDto.getAddress()))
                 restaurant.setAddress(restaurantDto.getAddress());
             if (StringUtils.hasLength(restaurantDto.getTel()))
                 restaurant.setTel(restaurantDto.getTel());
+
+            if (StringUtils.hasLength(restaurantDto.getOpentime()))
+                restaurant.setOpentime(restaurantDto.getOpentime());
+            if (StringUtils.hasLength(restaurantDto.getClosetime()))
+                restaurant.setClosetime(restaurantDto.getClosetime());
+            if (StringUtils.hasLength(restaurantDto.getHoliday()))
+                restaurant.setHoliday(restaurantDto.getHoliday());
+
             if (StringUtils.hasLength(restaurantDto.getDetail()))
                 restaurant.setDetail(restaurantDto.getDetail());
             if (StringUtils.hasLength(restaurantDto.getTags()))
                 restaurant.setTags(restaurantDto.getTags());
-            if (StringUtils.hasLength(restaurantDto.getTime()))
-                restaurant.setTime(restaurantDto.getTime());
 
             if (restaurantDto.getLng() != null)
                 restaurant.setLng(restaurantDto.getLng());
             if (restaurantDto.getLat() != null)
                 restaurant.setLat(restaurantDto.getLat());
+
             if (restaurantDto.getTotal_seat_count() != null)
                 restaurant.setTotal_seat_count(restaurantDto.getTotal_seat_count());
+            if (restaurantDto.getVacancy_count() != null)
+                restaurant.setVacancy_count(restaurantDto.getVacancy_count());
+
+            if (StringUtils.hasLength(restaurantDto.getOwner()))
+                restaurant.setOwner(restaurantDto.getOwner());
 
             restaurantRepository.save(restaurant);
             return 1;

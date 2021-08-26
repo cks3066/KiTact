@@ -48,8 +48,14 @@ public class Restaurant extends Timestamped {
     @Column(length = 15)
     private String tel;
 
+    @Column(length = 50)
+    private String opentime;
+
+    @Column(length = 50)
+    private String closetime;
+
     @Column(length = 30)
-    private String time;
+    private String holiday;
 
     @Column(length = 200)
     private String detail;
@@ -69,15 +75,19 @@ public class Restaurant extends Timestamped {
     @Column
     private Integer vacancy_count;
 
+    @Column
+    private String owner;
+
 
     public Restaurant(String large_category, String medium_category, String small_category,
                       String restaurant_name,
                       String img,
                       String address, String tel,
-                      String time,
+                      String opentime, String closetime, String holiday,
                       String detail, String tags,
                       Integer lat, Integer lng,
-                      Integer total_seat_count, Integer vacancy_count) {
+                      Integer total_seat_count, Integer vacancy_count,
+                      String owner) {
         this.large_category = large_category;
         this.medium_category = medium_category;
         this.small_category = small_category;
@@ -85,12 +95,15 @@ public class Restaurant extends Timestamped {
         this.img = img;
         this.address = address;
         this.tel = tel;
-        this.time = time;
+        this.opentime = opentime;
+        this.closetime = closetime;
+        this.holiday = holiday;
         this.detail = detail;
         this.tags = tags;
         this.lat = lat;
         this.lng = lng;
         this.total_seat_count = total_seat_count;
         this.vacancy_count = vacancy_count;
+        this.owner = owner;
     }
 }
