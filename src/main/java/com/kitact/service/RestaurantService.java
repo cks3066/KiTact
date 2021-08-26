@@ -40,11 +40,11 @@ public class RestaurantService {
                 SearchImageResponseDTO.SearchImageItem imageItem = searchImageResponseDTO.getItems().stream().findFirst().get();
                 // 결과를 리턴
                 RestaurantDto restaurant = new RestaurantDto();
-                restaurant.setRestaurant_name(localItem.getTitle());
+                restaurant.setRestaurant_name(localItem.getTitle().replaceAll("<[^>]*>", " "));
                 restaurant.setLarge_category("식당");
                 restaurant.setMedium_category(localItem.getCategory().split(">")[0]);
                 restaurant.setSmall_category(localItem.getCategory().split(">")[1]);
-                restaurant.setImg(imageItem.getLink());
+                restaurant.setImg(imageItem.getThumbnail());
                 restaurant.setAddress(localItem.getAddress());
                 restaurant.setTel(localItem.getTelephone());
                 restaurant.setDetail(localItem.getDescription());
