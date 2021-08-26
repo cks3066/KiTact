@@ -7,7 +7,7 @@ class Connect extends Component {
     }
 
     getApi = () => {
-        axios.get("http://localhost:3000/test/time")
+        axios.get("http://localhost:8080/test/time")
             .then(res => {
                 console.log("hi2");
                 console.log(res);

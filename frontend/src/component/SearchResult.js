@@ -16,9 +16,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SearchResult() {
+
+
+export default function SearchResult(props) {
+  const dispatch = useDispatch();
   const search = useSelector((state) => state.search);
   const classes = useStyles();
+
   return (
     <React.Fragment>
       <Title>검색결과</Title>
@@ -29,10 +33,13 @@ export default function SearchResult() {
         {search.searchResult.address}
       </Typography>
       <Typography>
-        {search.searchResult.openinghours}
+        {search.searchResult.opentime}
       </Typography>
       <Typography>
-        {search.searchResult.big_category}
+        {search.searchResult.large_category}
+      </Typography>
+      <Typography>
+        {search.searchResult.medium_category}
       </Typography>
       <Typography>
         {search.searchResult.small_category}

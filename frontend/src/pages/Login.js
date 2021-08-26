@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Login = props => {
+  // 에러창
   const [openErr1, setOpenErr1] = React.useState(false)
   const [openErr2, setOpenErr2] = React.useState(false)
 
@@ -54,8 +55,6 @@ const Login = props => {
   const [pwd, setPwd] = React.useState('')
 
   const login = () => {
-    console.log(id)
-
     if (id === '' || pwd === '') {
       setOpenErr1(true)
       return
