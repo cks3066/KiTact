@@ -37,7 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.cors().and()
+
                 .httpBasic().disable()
                 .csrf().ignoringAntMatchers("/h2-console/**").disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
