@@ -4,7 +4,6 @@ import com.kitact.data.dto.SearchImageReqDto;
 import com.kitact.data.dto.SearchImageResDto;
 import com.kitact.data.dto.SearchReqDto;
 import com.kitact.data.dto.SearchResDto;
-import lombok.var;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
