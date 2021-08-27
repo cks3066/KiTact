@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 예외 처리를 도와주는 클래스
+ */
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class ExceptionAdvice {

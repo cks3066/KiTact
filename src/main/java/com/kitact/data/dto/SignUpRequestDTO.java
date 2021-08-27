@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * 유저의 회원가입 요청시 전달되는 DTO 클래스
+ */
 @Setter
 @Getter
 @AllArgsConstructor
