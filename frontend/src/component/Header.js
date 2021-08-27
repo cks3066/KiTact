@@ -189,6 +189,10 @@ export default function Header() {
     setOpen(false)
     history.push('/reservation')
   }
+  const clickRestaurant = () => {
+    setOpen(false)
+    history.push('/newrestaurant')
+  }
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget)
@@ -369,6 +373,12 @@ export default function Header() {
                 <AssignmentIcon />
               </ListItemIcon>
               <ListItemText primary='예약 확인' />
+            </ListItem>
+            <ListItem button key={'매장 등록'} onClick={clickRestaurant}>
+              <ListItemIcon>
+                <AssignmentIcon />
+              </ListItemIcon>
+              <ListItemText primary='매장 등록' />
             </ListItem>
           </List>
         </Router>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Grid, Image, Input, Text } from '../elements'
+import { Grid, Image, Input, Text } from '../elements'
 import { Tags } from '../elements/Tags'
 import { MenuList } from './MenuList'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,21 +9,14 @@ import { OwnerPermit } from '../shared/OwnerPermit'
 import { Combobox } from '../elements/Combobox'
 import { PostCode } from '../elements/PostCode'
 import Modal from '../elements/Modal'
-import { actionCreators as uAc } from '../redux/modules/restaurant'
-import { MenuInsert } from './MenuInsert'
+import { actionCreators as rAc } from '../redux/modules/restaurant'
 import axios from 'axios'
 import { Upload } from '../elements/Upload'
 
 export const Restaurant = () => {
-  axios
-    .get('http://localhost:8080/test/time')
-    .then(res => {
-      console.log(res)
-      this.setState({
-        message: res.data,
-      })
-    })
-    .catch(res => console.log(res))
+  axios.get('http://localhost:8080/test/time').then(res => {
+    console.log(res)
+  })
   const restaurant = useSelector(state => state.restaurant)
   const dispatch = useDispatch()
 
@@ -38,25 +31,21 @@ export const Restaurant = () => {
   )
 
   const [postmodalVisible, setpostModalVisible] = useState(false)
-  const [menumodalVisible, setmenuModalVisible] = useState(false)
 
   const openPostModal = () => {
     setpostModalVisible(true)
   }
 
-  const openMenuModal = () => {
-    setmenuModalVisible(true)
-  }
-
   const closeModal = () => {
     setpostModalVisible(false)
-    setmenuModalVisible(false)
   }
 
   const [name, setName] = useState('')
   const [img, setImg] = useState('')
   const [tel, setTel] = useState('')
-  const [time, setTime] = useState('')
+  const [opentime, setOpentime] = useState('')
+  const [closetime, setClosetime] = useState('')
+  const [holiday, setHoliday] = useState('')
   const [detail, setDetail] = useState('')
   const [owner, setOwner] = useState('')
 
@@ -71,8 +60,14 @@ export const Restaurant = () => {
       case 'tel':
         setTel(value)
         break
-      case 'time':
-        setTime(value)
+      case 'opentime':
+        setOpentime(value)
+        break
+      case 'closetime':
+        setClosetime(value)
+        break
+      case 'holiday':
+        setHoliday(value)
         break
       case 'detail':
         setDetail(value)
@@ -83,7 +78,7 @@ export const Restaurant = () => {
       default:
         break
     }
-    dispatch(uAc.updateInfo({ target: target, value: value }))
+    dispatch(rAc.updateInfo({ target: target, value: value }))
   }
 
   return (
@@ -118,8 +113,13 @@ export const Restaurant = () => {
             value={name ? name : restaurant.info.name}
             _onChange={e => handleChange('name', e.target.value)}
           />
+          <Input
+            label='대표자'
+            value={owner ? owner : restaurant.info.owner}
+            _onChange={e => handleChange('owner', e.target.value)}
+          />
         </Grid>
-        <Grid is_flex>
+        <Grid is_flex padding='10px'>
           <Input
             label='주소'
             value={restaurant.info.address}
@@ -127,14 +127,21 @@ export const Restaurant = () => {
             width='328px'
           />
           <Input
-            label='영업시간'
-            value={time ? time : restaurant.info.time}
-            _onChange={e => handleChange('time', e.target.value)}
+            label='개점'
+            value={opentime ? opentime : restaurant.info.opentime}
+            _onChange={e => handleChange('opentime', e.target.value)}
+            type='time'
           />
           <Input
-            label='대표자'
-            value={owner ? owner : restaurant.info.owner}
-            _onChange={e => handleChange('owner', e.target.value)}
+            label='폐점'
+            value={closetime ? closetime : restaurant.info.closetime}
+            _onChange={e => handleChange('closetime', e.target.value)}
+            type='time'
+          />
+          <Input
+            label='휴일'
+            value={holiday ? holiday : restaurant.info.holiday}
+            _onChange={e => handleChange('holiday', e.target.value)}
           />
         </Grid>
         {postmodalVisible && (
@@ -159,32 +166,21 @@ export const Restaurant = () => {
           />
         </Grid>
         <Grid is_flex>
-          <Tags></Tags>
+          <Tags tags={restaurant.info.tags} />
         </Grid>
         <Grid>
           <Text label='좌석'>💺 좌석을 선택해주세요.</Text>
           <Text label='전체좌석수'>
             {restaurant.info.total_seat_count}개의 좌석 중 {restaurant.info.vacancy_count}개의
             좌석이 남아 있어요
-            <Seats />
           </Text>
+          <Seats />
         </Grid>
         <Grid>
           <MenuList />
         </Grid>
-        <Button is_float text='+' _onClick={openMenuModal} onClose={closeModal} />
-        {menumodalVisible && (
-          <Modal
-            visible={menumodalVisible}
-            closable={true}
-            maskClosable={true}
-            onClose={closeModal}
-          >
-            <MenuInsert onClose={closeModal} />
-          </Modal>
-        )}
       </Grid>
-      {/* ↑점주UI ↓고객UI */}
+      {/* ↑점주UI ================================================================================ ↓고객UI */}
       <Grid padding='10px'>
         <Grid is_flex>
           <Text label='대분류'>{restaurant.info.large_category}</Text>
@@ -197,7 +193,10 @@ export const Restaurant = () => {
         <Grid is_flex>
           <Text label='주소'>🏍 {restaurant.info.address}</Text>
           <Text label='전화번호'>📞 {restaurant.info.tel}</Text>
-          <Text label='영업시간'>⏰ {restaurant.info.time}</Text>
+          <Text label='영업시간'>
+            ⏰ {restaurant.info.opentime + '~' + restaurant.info.closetime}
+          </Text>
+          <Text label='휴일'>📞 {restaurant.info.holiday}</Text>
           <Text label='대표자'>대표자: {restaurant.info.owner}</Text>
         </Grid>
         <Image shape='rectangle' src={restaurant.info.img} />
@@ -205,16 +204,15 @@ export const Restaurant = () => {
           <Text label='매장상세설명'>🥠 {restaurant.info.detail}</Text>
         </Grid>
         <Grid is_flex>
-          <Tags></Tags>
+          <Tags tags={restaurant.info.tags} />
         </Grid>
         <Grid>
           <Text label='좌석'>💺 좌석을 선택해주세요.</Text>
           <Text label='전체좌석수'>
             {restaurant.info.total_seat_count}개의 좌석 중 {restaurant.info.vacancy_count}개의
             좌석이 남아 있어요
-            {/* <DataGrid></DataGrid> */}
-            <Seats />
           </Text>
+          <Seats />
         </Grid>
         <Grid>
           <MenuList />

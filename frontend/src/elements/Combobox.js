@@ -6,12 +6,13 @@ import { Grid } from './Grid'
 import { Text } from './Text'
 
 export const Combobox = props => {
-  const { label } = props
+  const { label, _onChange } = props
 
   const dispatch = useDispatch()
 
   const handleChange = value => {
     dispatch(uAc.updateCategory({ category: props.position, text: value }))
+    _onChange(value)
   }
   if (props.category === undefined || !props.category) return <React.Fragment />
   return (

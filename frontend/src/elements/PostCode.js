@@ -1,9 +1,9 @@
 import React from 'react'
 import DaumPostCode from 'react-daum-postcode'
 import { useDispatch } from 'react-redux'
-import { actionCreators as uAc } from '../redux/modules/restaurant'
+import { actionCreators as uRc } from '../redux/modules/restaurant'
 
-export const PostCode = ({ onClose, props }) => {
+export const PostCode = ({ onClose, setAddress }) => {
   const dispatch = useDispatch()
   const close = e => {
     if (onClose) {
@@ -22,7 +22,8 @@ export const PostCode = ({ onClose, props }) => {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : ''
     }
-    dispatch(uAc.updateAddress(fullAddress))
+    dispatch(uRc.updateAddress(fullAddress))
+    setAddress(fullAddress)
     close()
   }
   return <DaumPostCode onComplete={handleComplete} className='post-code' />

@@ -20,12 +20,10 @@ function uploadImageFB(image) {
     console.log(`images/${new Date().getTime()}_${image.name}`)
     const _upload = storage.ref(`images/${image.name}`).put(image)
 
-    //   업로드!
     _upload
       .then(snapshot => {
         console.log(snapshot)
 
-        // 업로드한 파일의 다운로드 경로를 가져오자!
         snapshot.ref.getDownloadURL().then(url => {
           console.log(url)
           dispatch(uploadImage(url))
@@ -42,6 +40,8 @@ const initialState = {
   image_url: 'http://via.placeholder.com/400x300',
   uploading: false,
   preview: null,
+  default_empty_image:
+    'https://firebasestorage.googleapis.com/v0/b/kitact-24125.appspot.com/o/images%2Fempty.jpg?alt=media&token=5beb2808-2bec-45b3-87ee-d42bf9fb6d94',
 }
 
 // reducer
