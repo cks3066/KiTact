@@ -32,17 +32,7 @@ function Copyright() {
 }
 
 function App() {
-  const dispatch = useDispatch()
-
-  const _session_key = `firebase:authUser:${apiKey}:kitact`
-  const is_session = sessionStorage.getItem(_session_key) ? true : false
-
-  React.useEffect(() => {
-    if (is_session) {
-      dispatch(userActions.loginCheckFB())
-    }
-  }, [])
-
+ 
   return (
     <div className='App'>
       <div>
