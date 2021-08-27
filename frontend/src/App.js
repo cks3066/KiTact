@@ -17,6 +17,7 @@ import { useDispatch } from 'react-redux'
 
 import { history } from './redux/configStore'
 import { Order } from './pages/Order'
+import { NewRestaurant } from './pages/NewRestaurant'
 
 import Header from './component/Header'
 import { setCookie, getCookie, deleteCookie } from './shared/Cookie'
@@ -31,6 +32,16 @@ function Copyright() {
 }
 
 function App() {
+  const dispatch = useDispatch()
+
+  const _session_key = `firebase:authUser:${apiKey}:kitact`
+  const is_session = sessionStorage.getItem(_session_key) ? true : false
+
+  React.useEffect(() => {
+    if (is_session) {
+      dispatch(userActions.loginCheckFB())
+    }
+  }, [])
 
   return (
     <div className='App'>
@@ -45,6 +56,7 @@ function App() {
           <Route path='/login' exact component={Login} />
           <Route path='/signup' exact component={Signup} />
           <Route path='/order' component={Order} />
+          <Route path='/newrestaurant' component={NewRestaurant} />
         </ConnectedRouter>
 
         {/* Footer */}

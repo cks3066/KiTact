@@ -17,8 +17,23 @@ export const MenuInsert = ({ onClose, props }) => {
   return (
     <Grid>
       <Grid is_flex>
-        <Input label='메뉴 이름' width='90%' onChange={e => setName(e.target.value)} />
-        <Input label='가격' width='70%' onChange={e => setPrice(e.target.value)} />
+        <Input
+          label='메뉴 이름'
+          width='90%'
+          value={name}
+          _onChange={e => {
+            setName(e.target.value)
+          }}
+        />
+        <Input
+          type='number'
+          label='가격'
+          width='70%'
+          value={price}
+          _onChange={e => {
+            setPrice(e.target.value)
+          }}
+        />
       </Grid>
       <Image
         shape='rectangle'
@@ -28,7 +43,7 @@ export const MenuInsert = ({ onClose, props }) => {
             : 'http://www.kyochon.com/uploadFiles/TB_ITEM/%EB%B8%8C%EB%9E%9C%EB%93%9C_list_15-10-221047(3).png'
         }
       />
-      <Upload />
+      <Upload text='저장' />
     </Grid>
   )
 }

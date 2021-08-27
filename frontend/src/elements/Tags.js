@@ -5,9 +5,7 @@ import { actionCreators as uAc } from '../redux/modules/restaurant'
 import { useState } from 'react'
 import { OwnerPermit } from '../shared/OwnerPermit'
 
-export const Tags = tag => {
-  const restaurant = useSelector(state => state.restaurant)
-
+export const Tags = props => {
   const dispatch = useDispatch()
 
   const ENTER_KEY = 13
@@ -33,14 +31,10 @@ export const Tags = tag => {
     <OwnerPermit>
       <TagForm>
         <Tag>
-          <ul>
-            {restaurant.info.tags.map((tag, index) => (
-              <li key={index}>{tag}</li>
-            ))}
-          </ul>
+          <ul>{props.tags && props.tags.map((tag, index) => <li key={index}>{tag}</li>)}</ul>
           <input
             type='text'
-            placeholder='태그를 입력하세요'
+            placeholder='여기에 태그를 입력하세요'
             onChange={e => {
               setTagValue(e.target.value)
             }}
@@ -55,11 +49,7 @@ export const Tags = tag => {
       </TagForm>
       <TagForm>
         <Tag>
-          <ul>
-            {restaurant.info.tags.map((tag, index) => (
-              <li key={index}>{tag}</li>
-            ))}
-          </ul>
+          <ul>{props.tags && props.tags.map((tag, index) => <li key={index}>{tag}</li>)}</ul>
         </Tag>
       </TagForm>
     </OwnerPermit>

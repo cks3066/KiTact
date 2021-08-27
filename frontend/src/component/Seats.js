@@ -5,6 +5,7 @@ import { Grid, Button } from '../elements'
 import { DraggableItem } from '../elements/DraggableItem'
 import { SeatsHeader } from '../elements/SeatsHeader'
 import { actionCreators as uAc } from '../redux/modules/restaurant'
+import { OwnerPermit } from '../shared/OwnerPermit'
 import img from '../static_img/tiles-bg.png'
 
 export const Seats = props => {
@@ -18,22 +19,37 @@ export const Seats = props => {
   }
 
   return (
-    <div>
-      <Grid is_flex>
-        {restaurant.info.seats_rull.map((rull, index) => (
-          <SeatsHeader key={index} id={rull.id} text={rull.icon + '\n' + rull.text}></SeatsHeader>
-        ))}
-        <Button
-          _onClick={toggleDraggable}
-          text={restaurant.info.seat_edit_toggle ? '🔐편집하기' : '🔓잠그기'}
-        ></Button>
+    <OwnerPermit>
+      <Grid>
+        <Grid is_flex>
+          {restaurant.info.seats_rull.map((rull, index) => (
+            <SeatsHeader key={index} id={rull.id} text={rull.text} icon={rull.icon}></SeatsHeader>
+          ))}
+          <Button
+            height='60px'
+            _onClick={toggleDraggable}
+            text={restaurant.info.seat_edit_toggle ? '🔐편집하기' : '🔓잠그기'}
+          ></Button>
+        </Grid>
+        <SeatContainer>
+          {restaurant.info.seats.map((seat, index) => (
+            <DraggableItem key={index} {...seat} />
+          ))}
+        </SeatContainer>
       </Grid>
-      <SeatContainer>
-        {restaurant.info.seats.map((seat, index) => (
-          <DraggableItem key={index} {...seat} />
-        ))}
-      </SeatContainer>
-    </div>
+      <Grid>
+        <Grid is_flex>
+          {restaurant.info.seats_rull.map((rull, index) => (
+            <SeatsHeader key={index} id={rull.id} text={rull.text} icon={rull.icon}></SeatsHeader>
+          ))}
+        </Grid>
+        <SeatContainer>
+          {restaurant.info.seats.map((seat, index) => (
+            <DraggableItem key={index} {...seat} />
+          ))}
+        </SeatContainer>
+      </Grid>
+    </OwnerPermit>
   )
 }
 
@@ -44,5 +60,5 @@ const SeatContainer = styled.div`
   background-image: url(${img});
   background-position: center bottom;
   background-repeat: repeat-x;
-  border-radius: 0 0 13px 13px;
+  // border-radius: 0 0 13px 13px;
 `

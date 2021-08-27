@@ -1,5 +1,10 @@
 import { createAction, handleActions } from 'redux-actions'
 import { produce } from 'immer'
+import { firestore, storage } from '../../shared/Firebase'
+import { actionCreators as imageActions } from './image'
+import moment from 'moment'
+import axios from 'axios'
+import qs from 'query-string'
 
 const category = [
   {
@@ -85,12 +90,14 @@ const initialState = {
     img: 'https://likerdo-bucket-list.s3.ap-northeast-2.amazonaws.com/%EC%B9%98%ED%82%A8%EC%A7%91.jpg',
     address: '서울특별시 구로구 오류동 1234',
     tel: '123-1234',
-    time: '15:00 ~ 23:00',
     detail: '치킨과 생맥주가 맛있는 키택트 치킨으로 놀러오세요!!! 방역 철저 준수',
     tags: ['데이트코스', '맛집', '먹방', '치킨은안쪄'],
     total_seat_count: 15,
     vacancy_count: 3,
     owner: '홍길동',
+    opentime: '15:00:00',
+    closetime: '01:00:00',
+    holiday: '매주 월요일',
     seats_rull: [
       { id: 1, type: 'seat', icon: '🙋‍♂️', text: '1명' },
       { id: 2, type: 'seat', icon: '👨‍❤️‍👨', text: '2명' },
@@ -110,8 +117,8 @@ const initialState = {
         id: 1,
         type: 'seat',
         icon: '👨‍👩‍👧',
-        x: 566,
-        y: 89,
+        x: 520,
+        y: 90,
         people: 3,
         vacancy: true,
         client: '',
@@ -120,8 +127,8 @@ const initialState = {
         id: 2,
         type: 'seat',
         icon: '👨‍👩‍👧‍👧',
-        x: 566,
-        y: 310,
+        x: 520,
+        y: 300,
         people: 4,
         vacancy: true,
         client: '',
@@ -130,8 +137,8 @@ const initialState = {
         id: 3,
         type: 'seat',
         icon: '🙋‍♂️',
-        x: 384,
-        y: 89,
+        x: 320,
+        y: 90,
         people: 1,
         vacancy: false,
         client: 'Henrietta',
@@ -140,8 +147,8 @@ const initialState = {
         id: 4,
         type: 'seat',
         icon: '👨‍❤️‍👨',
-        x: 189,
-        y: 95,
+        x: 140,
+        y: 90,
         people: 2,
         vacancy: false,
         client: 'Leavitt',
@@ -150,8 +157,8 @@ const initialState = {
         id: 5,
         type: 'seat',
         icon: '👨‍❤️‍👨',
-        x: 383,
-        y: 310,
+        x: 320,
+        y: 300,
         people: 2,
         vacancy: true,
         client: '',
@@ -160,16 +167,16 @@ const initialState = {
         id: 6,
         type: 'seat',
         icon: '👨‍👩‍👧',
-        x: 194,
-        y: 310,
+        x: 140,
+        y: 300,
         people: 3,
         vacancy: true,
         client: '',
       },
-      { id: 7, type: 'door', icon: '🚪', x: 11, y: 10 },
+      { id: 7, type: 'door', icon: '🚪', x: 50, y: 10 },
       { id: 8, type: 'checkout', icon: '💰', x: 16, y: 150 },
-      { id: 9, type: 'kitchen', icon: '👩‍🍳', x: 708, y: 395 },
-      { id: 10, type: 'toilet', icon: '🚽', x: 817, y: 50 },
+      { id: 9, type: 'kitchen', icon: '👩‍🍳', x: 608, y: 395 },
+      { id: 10, type: 'toilet', icon: '🚽', x: 617, y: 50 },
       { id: 11, type: 'window', icon: '👓', x: 400, y: 10 },
     ],
   },
@@ -225,6 +232,8 @@ const UPDATE_ADDRESS = 'UPDATE_ADDRESS'
 const UPDATE_CATEGORY = `UPDATE_CATEGORY`
 const UPDATE_INFO = 'UPDATE_INFO'
 const ADD_MENU = 'ADD_MENU'
+const UPDATE_MENU = 'UPDATE_MENU'
+const ADD_INFO = 'ADD_INFO'
 
 const load = createAction(LOAD, restaurant => ({ restaurant }))
 const creat = createAction(CREATE, restaurant => ({ restaurant }))
@@ -249,6 +258,73 @@ const updateAddress = createAction(UPDATE_ADDRESS, address => ({ address }))
 const updateCategory = createAction(UPDATE_CATEGORY, category_info => ({ category_info }))
 const updateInfo = createAction(UPDATE_INFO, element => ({ element }))
 const addMenu = createAction(ADD_MENU, menu => ({ menu }))
+const updateMenu = createAction(UPDATE_MENU, element => ({ element }))
+const addInfo = createAction(ADD_INFO, info => ({ info }))
+
+const addInfoWithFB = info => {
+  return function (dispatch, getState, { history }) {
+    //const postDB = firestore.collection('post')
+
+    // const _user = getState().user.user
+
+    // const user_info = {
+    //   user: _user.user,
+    // }
+
+    const _image = getState().image.preview
+    if (_image === null) {
+      window.alert('이미지를 선택해주세요.')
+      return
+    }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+
+    const _upload = storage
+      // .ref(`images/${user_info.user_od}_${new Date().getTime()}`) 계정 생성 로직 구현후 수정
+      .ref(`images/_${new Date().getTime()}`)
+      .putString(_image, 'data_url')
+    _upload.then(snapshot => {
+      snapshot.ref
+        .getDownloadURL()
+        .then(url => {
+          console.log(url)
+          return url
+        })
+        .then(url => {
+          axios
+            .post(
+              'http://localhost:8080/restaurant/enroll',
+              {
+                ...info,
+                img: url,
+              },
+              config
+            )
+            .then(res => {
+              let info = { ...info, info: { img: url } }
+              console.log(res)
+              dispatch(addInfo(info))
+              dispatch(imageActions.setPreview(null))
+              history.replace('/restaurant')
+            })
+            .catch(err => {
+              window.alert('입력이 실패했습니다.')
+              console.log('입력 실패', err)
+            })
+        })
+        .catch(err => {
+          window.alert('이미지 업로드가 실패 했습니다.')
+          console.log('이미지 업로드 실패', err)
+        })
+    })
+
+    return
+  }
+}
 
 const calculateSeat = draft => {
   const vacancy_count = draft.info.seats
@@ -375,8 +451,14 @@ export default handleActions(
           case 'tel':
             draft.info.tel = value
             break
-          case 'time':
-            draft.info.time = value
+          case 'opentime':
+            draft.info.opentime = value
+            break
+          case 'closetime':
+            draft.info.closetime = value
+            break
+          case 'holiday':
+            draft.info.holiday = value
             break
           case 'detail':
             draft.info.detail = value
@@ -384,7 +466,6 @@ export default handleActions(
           case 'owner':
             draft.info.owner = value
             break
-
           default:
             break
         }
@@ -394,11 +475,33 @@ export default handleActions(
         draft.menu_list.push({
           id: draft.menu_list.length + 1,
           src: 'http://www.kyochon.com/uploadFiles/TB_ITEM/%EB%B8%8C%EB%9E%9C%EB%93%9C_list_15-10-221047(3).png',
-          name: action.menu.name,
-          price: action.menu.price,
+          name: action.payload.menu.name,
+          price: action.payload.menu.price,
           active: false,
           quantity: 0,
         })
+      }),
+    [UPDATE_MENU]: (state, action) =>
+      produce(state, draft => {
+        const value = action.payload.element.value
+        const menu = draft.menu_list.find(menu => menu.id === action.payload.element.id)
+        switch (action.payload.element.target) {
+          case 'name':
+            menu.name = value
+            break
+          case 'img':
+            menu.img = value
+            break
+          case 'price':
+            menu.price = value
+            break
+          default:
+            break
+        }
+      }),
+    [ADD_INFO]: (state, action) =>
+      produce(state, draft => {
+        draft.info = { ...action.payload.info }
       }),
   },
   initialState
@@ -420,6 +523,9 @@ const actionCreators = {
   updateCategory,
   updateInfo,
   addMenu,
+  updateMenu,
+  addInfo,
+  addInfoWithFB,
 }
 
 export { actionCreators }
