@@ -24,8 +24,11 @@ import AssignmentIcon from '@material-ui/icons/Assignment'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Navbar } from 'react-bootstrap'
 import Button from '@material-ui/core/Button'
-
+import Permit from '../shared/Permit'
 import { history } from '../redux/configStore'
+import { useSelector, useDispatch } from 'react-redux'
+import { actionCreators as userActions } from '../redux/modules/user'
+import { Cookies } from 'react-cookie'
 
 const drawerWidth = 180
 
@@ -93,14 +96,16 @@ const useStyles = makeStyles(theme => ({
     margin: '0.5rem',
   },
   title: {
-    position: 'absolute',
-    left: '50%',
-    marginLeft: '-360px',
-    width: '720px',
+    position: 'relative',
   },
 }))
 
+const cookies = new Cookies()
+
 export default function Header() {
+  const dispatch = useDispatch()
+  const is_login = !(cookies.get('is_login') === undefined)
+  console.log(is_login)
   const classes = useStyles()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
@@ -111,6 +116,12 @@ export default function Header() {
 
   const handleDrawerClose = () => {
     setOpen(false)
+  }
+
+  const handleLogout = () => {
+    setOpen(false)
+    dispatch(userActions.logOut())
+    history.push('/map')
   }
 
   const clickLogin = () => {
@@ -154,20 +165,23 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant='h4' noWrap className={classes.title}>
-         키택트
+            키택트
           </Typography>
-          <div className={classes.right}>
-            <div className={classes.button}>
-              <Button variant='contained' color='primary'>
-                로그인
-              </Button>
-            </div>
-            {/* <div className={classes.button}>
-              <Button variant='contained' color='secondary'>
-                로그아웃
-              </Button>
-            </div> */}
-          </div>
+          {/* <div className={classes.right}>
+            {!is_login ? (
+              <div className={classes.button}>
+                <Button variant='contained' color='primary' onClick={clickLogin}>
+                  로그인
+                </Button>
+              </div>
+            ) : (
+              <div className={classes.button}>
+                <Button variant='contained' color='primary' onClick={handleLogout}>
+                  로그아웃
+                </Button>
+              </div>
+            )}
+          </div> */}
         </Toolbar>
       </AppBar>
 
@@ -188,19 +202,29 @@ export default function Header() {
         <Divider />
         <Router>
           <List>
-            <ListItem button key={'로그인'} onClick={clickLogin}>
-              <ListItemIcon>
-                <PersonIcon />
-              </ListItemIcon>
-              <ListItemText primary='로그인' />
-            </ListItem>
-
-            <ListItem button key={'회원가입'} onClick={clickSignup}>
-              <ListItemIcon>
-                <PersonAddIcon />
-              </ListItemIcon>
-              <ListItemText primary='회원가입' />
-            </ListItem>
+            {!is_login ? (
+              <ListItem button key={'로그인'} onClick={clickLogin}>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary='로그인' />
+              </ListItem>
+            ) : (
+              <ListItem button key={'로그아웃'} onClick={handleLogout}>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary='로그아웃' />
+              </ListItem>
+            )}
+            {!is_login ? (
+              <ListItem button key={'회원가입'} onClick={clickSignup}>
+                <ListItemIcon>
+                  <PersonAddIcon />
+                </ListItemIcon>
+                <ListItemText primary='회원가입' />
+              </ListItem>
+            ) : null}
           </List>
           <Divider />
 

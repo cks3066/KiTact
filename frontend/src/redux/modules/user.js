@@ -16,7 +16,7 @@ const SET_USER = 'SET_USER'
 // action creators
 const logOut = createAction(LOG_OUT, user => ({ user }))
 const getUser = createAction(GET_USER, user => ({ user }))
-const setUser = createAction(SET_USER, user => ({ user }))
+const setUser = createAction(SET_USER, (user, token) => ({ user, token }))
 
 // initialState
 const initialState = {
@@ -36,7 +36,18 @@ const loginFB = (id, pwd) => {
         const { accessToken } = user.data.data
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
-        console.log(user.data.data);
+
+        dispatch(
+          setUser(
+            {
+              user_name: id,
+              id: id,
+            },
+            user.data.data
+          ) //is_owner 넘겨야되는데 response 에 is_owner가 없음
+        )
+
+        history.push('/')
       })
       .catch(error => {
         console.log('로그인 post 에러')
@@ -45,13 +56,13 @@ const loginFB = (id, pwd) => {
   }
 }
 
-const signupFB = (id, pwd, user_name, is_owner) => {
+const signupFB = (id, pwd, is_owner) => {
   return function (dispatch, getState, { history }) {
     axios
       .post('http://localhost:8080/user/sign-up', {
         username: id,
         password: pwd,
-        owner: true,
+        owner: is_owner,
       })
       .then(user => {
         console.log('회원가입 성공')
@@ -68,20 +79,9 @@ const signupFB = (id, pwd, user_name, is_owner) => {
 
 const loginCheckFB = () => {
   return function (dispatch, getState, { history }) {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        dispatch(
-          setUser({
-            user_name: user.displayName,
-            user_profile: '',
-            id: user.email,
-            uid: user.uid,
-          })
-        )
-      } else {
-        dispatch(logOut())
-      }
-    })
+    dispatch(
+      setUser()
+    )
   }
 }
 
@@ -162,12 +162,14 @@ export default handleActions(
     [SET_USER]: (state, action) =>
       produce(state, draft => {
         setCookie('is_login', 'success')
+        setCookie('token', action.payload.token)
         draft.user = action.payload.user
         draft.is_login = true
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, draft => {
         deleteCookie('is_login')
+        deleteCookie('token')
         draft.user = null
         draft.is_login = false
       }),

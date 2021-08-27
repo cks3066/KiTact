@@ -5,9 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import Title from './Title';
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as searchActions} from "../redux/modules/search";
+import { history } from '../redux/configStore'
 
-function preventDefault(event) {
-  event.preventDefault();
+function preventDefault() {
+  history.push('/reservation')
 }
 
 const useStyles = makeStyles({

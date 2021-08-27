@@ -11,8 +11,8 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import Alert from '@material-ui/lab/Alert'
+import AlertTitle from '@material-ui/lab/AlertTitle'
 
 import { useDispatch } from 'react-redux'
 import { actionCreators as userActions } from '../redux/modules/user'
@@ -48,6 +48,7 @@ const Signup = props => {
     const [pwd, setPwd] = React.useState('')
     const [pwd_check, setPwdCheck] = React.useState('')
     const [user_name, setUserName] = React.useState('')
+    const [is_owner, setisOwner] = React.useState(false)
 
     const signup = () => {
       if (id === '' || pwd === '' || user_name === '') {
@@ -65,7 +66,11 @@ const Signup = props => {
         return
       }
 
-      dispatch(userActions.signupFB(id, pwd, user_name))
+      dispatch(userActions.signupFB(id, pwd, is_owner))
+    }
+
+    const handleChange = e => {
+      setisOwner(!is_owner)
     }
 
     return (
@@ -133,7 +138,14 @@ const Signup = props => {
                 </Grid>
                 <Grid item xs={12}>
                   <FormControlLabel
-                    control={<Checkbox value='userRole' color='primary' />}
+                    control={
+                      <Checkbox
+                        value='userRole'
+                        color='primary'
+                        checked={is_owner}
+                        onChange={handleChange}
+                      />
+                    }
                     label='기업 회원입니다.'
                   />
                 </Grid>
@@ -147,13 +159,13 @@ const Signup = props => {
               >
                 Sign Up
               </Button>
-              <Grid container justifyContent='flex-end'>
+              {/* <Grid container justifyContent='flex-end'>
                 <Grid item>
                   <Link href='#' variant='body2'>
                     계정이 있으십니까? 로그인
                   </Link>
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Grid>
           </form>
         </div>

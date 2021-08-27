@@ -85,7 +85,6 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(2),
     display: 'flex',
-    overflow: 'auto',
     flexDirection: 'column',
   },
   fixedHeight: {
@@ -102,21 +101,15 @@ const Search = props => {
 
       <Container maxWidth='lg' className={classes.container}>
         <Grid container spacing={4}>
-          {/* Chart */}
           <Grid item xs={12}>
             <Paper className={Paper}>
-              <Cent><ShowMap /></Cent>
+              <ShowMap />
             </Paper>
           </Grid>
-          {/* Recent Deposits */}
           <Grid item xs={12}>
             <Paper className={fixedHeightPaper}>
               <SearchResult></SearchResult>
             </Paper>
-          </Grid>
-          {/* Recent Orders */}
-          <Grid item xs={12}>
-            <Paper className={classes.paper}>안녕</Paper>
           </Grid>
         </Grid>
       </Container>

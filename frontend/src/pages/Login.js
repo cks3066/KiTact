@@ -21,6 +21,7 @@ import { getCookie, setCookie, deleteCookie } from '../shared/Cookie'
 import { useDispatch } from 'react-redux'
 import { actionCreators as userActions } from '../redux/modules/user'
 import { emailCheck } from '../shared/common'
+import { Cookies } from 'react-cookie'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -42,6 +43,8 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2),
   },
 }))
+
+const cookies = new Cookies()
 
 const Login = props => {
   // 에러창
@@ -67,6 +70,7 @@ const Login = props => {
 
     dispatch(userActions.loginFB(id, pwd))
   }
+
 
   return (
     <React.Fragment>
@@ -141,7 +145,7 @@ const Login = props => {
             >
               Sign In
             </Button>
-            <Grid container xs>
+            {/* <Grid container xs>
               <Grid item xs >
                 <Link href='#' variant='body2'>
                  아이디/비밀번호 찾기
@@ -152,7 +156,7 @@ const Login = props => {
                   계정이 없으신가요?회원가입
                 </Link>
               </Grid>
-            </Grid>
+            </Grid> */}
           </form>
         </div>
       </Container>

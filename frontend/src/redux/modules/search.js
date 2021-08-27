@@ -3,10 +3,11 @@ import { produce } from 'immer'
 
 // actions
 const SET_RESTAURANT = 'SET_RESTAURANT'
-const GET_RESTAURANT = 'GET_RESTAURANT'
+const SET_COORDINATES = 'SET_COORDINATES'
 
 // action creators
 const setRestaurant = createAction(SET_RESTAURANT, input_data => ({ input_data }))
+const setCoordinate = createAction(SET_COORDINATES, position => ({ position }))
 
 // initialState
 const initialState = {
@@ -39,6 +40,11 @@ export default handleActions(
       produce(state, draft => {
         draft.searchResult = action.payload.input_data
       }),
+    [SET_COORDINATES]: (state, action) =>
+      produce(state, draft => {
+        draft.searchResult.lng = action.payload.position.x
+        draft.searchResult.lat = action.payload.position.y
+      }),
   },
   initialState
 )
@@ -46,6 +52,7 @@ export default handleActions(
 // action creator export
 const actionCreators = {
   setRestaurant,
+  setCoordinate,
 }
 
 export { actionCreators }
