@@ -19,6 +19,7 @@ import { history } from './redux/configStore'
 import { Order } from './pages/Order'
 
 import Header from './component/Header'
+import Header2 from './component/Header2'
 import { setCookie, getCookie, deleteCookie } from './shared/Cookie'
 
 function Copyright() {
@@ -30,14 +31,16 @@ function Copyright() {
   )
 }
 
+
+document.body.style.backgroundColor = '#ccc';
+
 function App() {
 
   return (
     <div className='App'>
       <div>
-        <Connect />
         {/* Drawer & Header */}
-        <Header />
+        <Header/>
         <ConnectedRouter history={history}>
           <Route path='/' exact component={Search} />
           <Route path='/reservation' exact component={Restaurant} />

@@ -29,13 +29,33 @@ import { history } from '../redux/configStore'
 import { useSelector, useDispatch } from 'react-redux'
 import { actionCreators as userActions } from '../redux/modules/user'
 import { Cookies } from 'react-cookie'
+import { alpha } from '@material-ui/core/styles'
+import InputBase from '@material-ui/core/InputBase'
+import Badge from '@material-ui/core/Badge'
+import MenuItem from '@material-ui/core/MenuItem'
+import Menu from '@material-ui/core/Menu'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import NotificationsIcon from '@material-ui/icons/Notifications'
+import MoreIcon from '@material-ui/icons/MoreVert'
+import jQuery from 'jquery'
+import $ from 'jquery'
 
-const drawerWidth = 180
+const drawerWidth = 240
+const menuLeft = $(window).width() < 500 ? 150 : 20
 
 const useStyles = makeStyles(theme => ({
+  grow: {
+    flexGrow: 1,
+  },
   root: {
+    flexGrow: 1,
     display: 'flex',
-    position: 'relative',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    minWidth: '768px',
+    maxWidth: '768px',
+    flexDirection: 'column',
+    marginBottom: '10px',
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
@@ -43,23 +63,22 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
+  // appBarShift: {
+  //   width: `calc(1000 - ${drawerWidth}px)`,
+  //   marginLeft: drawerWidth,
+  //   transition: theme.transitions.create(['margin', 'width'], {
+  //     easing: theme.transitions.easing.easeOut,
+  //     duration: theme.transitions.duration.enteringScreen,
+  //   }),
+  // },
   menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: 'none',
+    display: 'fixed',
+    position: 'absolute',
+    left: menuLeft,
   },
   drawer: {
     width: drawerWidth,
-    flexShrink: 0,
+    flexShrink: 1,
   },
   drawerPaper: {
     width: drawerWidth,
@@ -79,7 +98,6 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: -drawerWidth,
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -88,6 +106,31 @@ const useStyles = makeStyles(theme => ({
     }),
     marginLeft: 0,
   },
+
+  title: {
+    flexGrow: 1,
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  sectionMobile: {
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
   right: {
     marginLeft: 'auto',
   },
@@ -95,20 +138,23 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-block',
     margin: '0.5rem',
   },
-  title: {
-    position: 'relative',
-  },
 }))
 
 const cookies = new Cookies()
 
 export default function Header() {
+  console.log($(window).width())
   const dispatch = useDispatch()
   const is_login = !(cookies.get('is_login') === undefined)
-  console.log(is_login)
+  const auth = useSelector(state => state.user.is_login)
   const classes = useStyles()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
+
+  const isMenuOpen = Boolean(anchorEl)
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -144,12 +190,85 @@ export default function Header() {
     history.push('/reservation')
   }
 
+  const handleProfileMenuOpen = event => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null)
+  }
+
+  const handleMenuClose = () => {
+    setAnchorEl(null)
+    handleMobileMenuClose()
+  }
+
+  const handleMobileMenuOpen = event => {
+    setMobileMoreAnchorEl(event.currentTarget)
+  }
+
+  const menuId = 'primary-search-account-menu'
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    </Menu>
+  )
+
+  const mobileMenuId = 'primary-search-account-menu-mobile'
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem>
+        <IconButton aria-label='show 4 new mails' color='inherit'>
+          <Badge badgeContent={4} color='secondary'>
+            <MailIcon />
+          </Badge>
+        </IconButton>
+        <p>Messages</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton aria-label='show 11 new notifications' color='inherit'>
+          <Badge badgeContent={11} color='secondary'>
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+        <p>Notifications</p>
+      </MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          aria-label='account of current user'
+          aria-controls='primary-search-account-menu'
+          aria-haspopup='true'
+          color='inherit'
+        >
+          <AccountCircle />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
+  )
+
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <AppBar
         color='primary'
-        position='fixed'
+        position='static'
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
@@ -167,21 +286,23 @@ export default function Header() {
           <Typography variant='h4' noWrap className={classes.title}>
             키택트
           </Typography>
-          {/* <div className={classes.right}>
-            {!is_login ? (
-              <div className={classes.button}>
-                <Button variant='contained' color='primary' onClick={clickLogin}>
-                  로그인
-                </Button>
-              </div>
-            ) : (
-              <div className={classes.button}>
-                <Button variant='contained' color='primary' onClick={handleLogout}>
-                  로그아웃
-                </Button>
-              </div>
-            )}
-          </div> */}
+
+          {auth || is_login ? (
+            <div>
+              <IconButton
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
+                color='inherit'
+              >
+                <AccountCircle />
+              </IconButton>
+            </div>
+          ) : (
+            <Button color='inherit' onClick={clickLogin}>
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
 

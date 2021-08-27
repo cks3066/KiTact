@@ -47,7 +47,7 @@ const loginFB = (id, pwd) => {
           ) //is_owner 넘겨야되는데 response 에 is_owner가 없음
         )
 
-        history.push('/')
+        history.push('/map')
       })
       .catch(error => {
         console.log('로그인 post 에러')

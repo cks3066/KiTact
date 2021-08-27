@@ -25,14 +25,14 @@ import { Cookies } from 'react-cookie'
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: '0px',
+    margin: '100px 50px 300px 50px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent : 'center',
+    justifyContent: 'center',
   },
   avatar: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
@@ -42,6 +42,7 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  login: { margin: '50px 0px 0px 0px' },
 }))
 
 const cookies = new Cookies()
@@ -71,7 +72,6 @@ const Login = props => {
     dispatch(userActions.loginFB(id, pwd))
   }
 
-
   return (
     <React.Fragment>
       <Collapse in={openErr1}>
@@ -96,12 +96,13 @@ const Login = props => {
       </Collapse>
 
       <Container component='main' maxWidth='xs'>
-        <CssBaseline />
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}></Avatar>
-          <Typography component='h1' variant='h5'>
-            로그인
-          </Typography>
+          <div className={classes.login}>
+            <Avatar className={classes.avatar}></Avatar>
+            <Typography component='h1' variant='h5'>
+              로그인
+            </Typography>
+          </div>
           <form className={classes.form} noValidate>
             <TextField
               variant='outlined'

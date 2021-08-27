@@ -20,7 +20,7 @@ import { emailCheck } from '../shared/common'
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    margin : '100px 10px 280px 0px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

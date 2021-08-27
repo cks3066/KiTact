@@ -182,8 +182,11 @@ const ShowMap = () => {
         id='map'
         style={{
           display: 'inline-block',
-          width: '600px',
+          width: '650px',
           height: '400px',
+          margin: '30px 10px 40px 10px',
+          borderRadius: '20px 20px 20px 20px',
+          borderStyle: 'none',
         }}
       ></div>
     </React.Fragment>
