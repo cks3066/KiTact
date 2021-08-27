@@ -25,7 +25,7 @@ import { Cookies } from 'react-cookie'
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    margin: '100px 50px 300px 50px',
+    margin: '100px 50px 320px 50px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

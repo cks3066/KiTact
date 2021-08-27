@@ -53,7 +53,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     minWidth: '768px',
-    maxWidth: '768px',
     flexDirection: 'column',
     marginBottom: '10px',
   },
