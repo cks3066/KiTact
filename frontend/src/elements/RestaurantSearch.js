@@ -16,12 +16,9 @@ const RestaurantSearch = () => {
   }
 
   const handleButton = async () => {
-    console.log('검색')
     axios
       .get('http://localhost:8080/restaurant/search?query=' + query)
       .then(res => {
-        console.log('검색 성공')
-        console.log(res)
         dispatch(searchActions.setRestaurant(res.data.data))
 
         window.naver.maps.Service.geocode(
@@ -37,7 +34,6 @@ const RestaurantSearch = () => {
               items = result.items // 검색 결과의 배열
 
             // do Something
-            console.log(items[0])
             dispatch(searchActions.setCoordinate(items[0].point))
           }
         )

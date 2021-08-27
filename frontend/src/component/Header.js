@@ -142,7 +142,6 @@ const useStyles = makeStyles(theme => ({
 const cookies = new Cookies()
 
 export default function Header() {
-  console.log($(window).width())
   const dispatch = useDispatch()
   const is_login = !(cookies.get('is_login') === undefined)
   const auth = useSelector(state => state.user.is_login)
