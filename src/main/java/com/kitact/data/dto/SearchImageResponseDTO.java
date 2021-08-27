@@ -5,8 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
-// 지역 검색 출력 결과를 변수화
+/**
+ * 네이버 지역 검색 API 호출 후 전달되는 DTO 클래스
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class SearchImageResponseDTO {
         private String title;  // 검색 결과 업체, 기관명을 나타낸다.
         private String link;  // 검색 결과 업체, 기관의 상세 정보가 제공되는 네이버 페이지의 하이퍼텍스트 link를 나타낸다.
         private String thumbnail;  // 검색 결과 이미지의 썸네일 link를 나타낸다.
-        private String sizeHeight;  // 검색 결과 이미지의 썸네일 높이를 나타낸다.
-        private String sizeWidth;  // 검색 결과 이미지의 너비를 나타낸다. 단위는 pixel이다.
+        private String sizeheight;  // 검색 결과 이미지의 썸네일 높이를 나타낸다.
+        private String sizewidth;  // 검색 결과 이미지의 너비를 나타낸다. 단위는 pixel이다.
     }
 }
