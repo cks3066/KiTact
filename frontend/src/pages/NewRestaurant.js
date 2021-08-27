@@ -33,9 +33,10 @@ export const NewRestaurant = () => {
   const [detail, setDetail] = useState('')
   const [owner, setOwner] = useState('')
   const [address, setAddress] = useState('')
-  const [largeCategory, setLargeCategory] = useState('')
-  const [midiumCategory, setMidiumCategory] = useState('')
-  const [smallCategory, setSmallCategory] = useState('')
+  const [largeCategory, setLargeCategory] = useState('식당')
+  const [midiumCategory, setMidiumCategory] = useState('한식')
+  const [smallCategory, setSmallCategory] = useState('백반')
+  const [tags, setTags] = useState()
 
   const midium_category = largeCategory
     ? restaurant.category.find(category => category.text === largeCategory).list
@@ -57,9 +58,13 @@ export const NewRestaurant = () => {
         address: address,
         holiday: holiday,
         detail: detail,
+        tags: tags,
+        total_seat_count: 0,
+        vacancy_count: 0,
       })
     )
   }
+
   return (
     <Grid>
       <Grid is_flex padding='10px 0px'>
@@ -123,7 +128,7 @@ export const NewRestaurant = () => {
         />
       </Grid>
       <Grid is_flex padding='10px 0px'>
-        <Tags></Tags>
+        <Tags tags={restaurant.info.tags} />
       </Grid>
       <Button text='입력 완료' _onClick={addInfo} />
     </Grid>

@@ -4,7 +4,6 @@ import { firestore, storage } from '../../shared/Firebase'
 import { actionCreators as imageActions } from './image'
 import moment from 'moment'
 import axios from 'axios'
-import qs from 'query-string'
 
 const category = [
   {
@@ -263,13 +262,28 @@ const addInfo = createAction(ADD_INFO, info => ({ info }))
 
 const addInfoWithFB = info => {
   return function (dispatch, getState, { history }) {
-    //const postDB = firestore.collection('post')
-
-    // const _user = getState().user.user
-
-    // const user_info = {
-    //   user: _user.user,
-    // }
+    // const search = getState().search
+    // const user = getState().user.user
+    const search = { lat: 32, lng: 32 }
+    const user = 1
+    const temp_tags = getState().restaurant.info.tags
+    const restaurant_data_db = {
+      restaurant_name: info.name,
+      large_category: info.large_category,
+      medium_category: info.midium_category,
+      small_category: info.small_category,
+      address: info.address,
+      tel: info.tel,
+      opentime: info.opentime,
+      closetime: info.closetime,
+      holiday: info.holiday,
+      detail: info.detail,
+      // tags: info.tags,
+      tags: temp_tags,
+      total_seat_count: info.total_seat_count,
+      vacancy_count: info.vacancy_count,
+      owner: info.owner,
+    }
 
     const _image = getState().image.preview
     if (_image === null) {
@@ -284,8 +298,7 @@ const addInfoWithFB = info => {
     }
 
     const _upload = storage
-      // .ref(`images/${user_info.user_od}_${new Date().getTime()}`) 계정 생성 로직 구현후 수정
-      .ref(`images/_${new Date().getTime()}`)
+      .ref(`images/${user}_${new Date().getTime()}`)
       .putString(_image, 'data_url')
     _upload.then(snapshot => {
       snapshot.ref
@@ -299,8 +312,11 @@ const addInfoWithFB = info => {
             .post(
               'http://localhost:8080/restaurant/enroll',
               {
-                ...info,
+                ...restaurant_data_db,
+                user_id: user,
                 img: url,
+                lat: search.let,
+                lng: search.lng,
               },
               config
             )

@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { OwnerPermit } from '../shared/OwnerPermit'
 
 export const Tags = props => {
+  const { tags } = props
   const dispatch = useDispatch()
 
   const ENTER_KEY = 13
@@ -16,7 +17,8 @@ export const Tags = props => {
   const handleKeyUp = e => {
     const key = e.keyCode
     if (key === ENTER_KEY || key === COMMA_KEY) {
-      dispatch(uAc.addTag(tagValue.trim().replace(/,/g, '')))
+      let tag = tagValue.trim().replace(/,/g, '')
+      dispatch(uAc.addTag(tag))
       setTagValue((e.target.value = ''))
     }
   }
@@ -31,7 +33,7 @@ export const Tags = props => {
     <OwnerPermit>
       <TagForm>
         <Tag>
-          <ul>{props.tags && props.tags.map((tag, index) => <li key={index}>{tag}</li>)}</ul>
+          <ul>{tags && tags.map((tag, index) => <li key={index}>{tag}</li>)}</ul>
           <input
             type='text'
             placeholder='여기에 태그를 입력하세요'
@@ -49,7 +51,7 @@ export const Tags = props => {
       </TagForm>
       <TagForm>
         <Tag>
-          <ul>{props.tags && props.tags.map((tag, index) => <li key={index}>{tag}</li>)}</ul>
+          <ul>{tags && tags.map((tag, index) => <li key={index}>{tag}</li>)}</ul>
         </Tag>
       </TagForm>
     </OwnerPermit>
