@@ -25,7 +25,7 @@ public class RestaurantService {
     private final NaverSearchService naverSearchService;
 
     // 식당 검색
-    public RestaurantDTO search(String query) {
+    public RestaurantDTON search(String query) {
 
         // 지역 검색
         SearchLocalRequestDTO searchLocalRequestDTO = new SearchLocalRequestDTO();
@@ -36,16 +36,16 @@ public class RestaurantService {
         if (searchLocalResponseDTO.getTotal() > 0) {
             SearchLocalResponseDTO.SearchLocalItem localItem = searchLocalResponseDTO.getItems().stream().findFirst().get();
 
-            RestaurantDTO restaurant = new RestaurantDTO();
-            restaurant.setRestaurant_name(localItem.getTitle().replaceAll("<[^>]*>", " "));
-            restaurant.setLarge_category("식당");
-            restaurant.setMedium_category(localItem.getCategory().split(">")[0]);
-            restaurant.setSmall_category(localItem.getCategory().split(">")[1]);
-            restaurant.setAddress(localItem.getAddress());
-            restaurant.setTel(localItem.getTelephone());
-            restaurant.setDetail(localItem.getDescription());
-            restaurant.setLng(localItem.getMapx());
-            restaurant.setLat(localItem.getMapy());
+            RestaurantDTON restaurantDTO = new RestaurantDTON();
+            restaurantDTO.setRestaurantName(localItem.getTitle().replaceAll("<[^>]*>", " "));
+            restaurantDTO.setLargeCategory("식당");
+            restaurantDTO.setMediumCategory(localItem.getCategory().split(">")[0]);
+            restaurantDTO.setSmallCategory(localItem.getCategory().split(">")[1]);
+            restaurantDTO.setAddress(localItem.getAddress());
+            restaurantDTO.setTel(localItem.getTelephone());
+            restaurantDTO.setDetail(localItem.getDescription());
+            restaurantDTO.setLng(localItem.getMapx());
+            restaurantDTO.setLat(localItem.getMapy());
 
             // 이미지 검색
             String imageQuery = localItem.getTitle().replaceAll("<[^>]*>", "");
@@ -56,10 +56,10 @@ public class RestaurantService {
 
             if (searchImageResponseDTO.getTotal() > 0) {
                 SearchImageResponseDTO.SearchImageItem imageItem = searchImageResponseDTO.getItems().stream().findFirst().get();
-                restaurant.setImg(imageItem.getThumbnail());
+                restaurantDTO.setImageUrl(imageItem.getThumbnail());
             }
             // 결과를 리턴
-            return restaurant;
+            return restaurantDTO;
         }
         throw new IllegalArgumentException("음식점이 없습니다!");
     }
@@ -82,9 +82,9 @@ public class RestaurantService {
         restaurantDTO.setRestaurantName(restaurant.getRestaurant_name());
         restaurantDTO.setOwnerName(restaurant.getOwner());
         restaurantDTO.setLargeCategory(restaurant.getLarge_category());
-        restaurantDTO.setMidiumCategory(restaurant.getMedium_category());
+        restaurantDTO.setMediumCategory(restaurant.getMedium_category());
         restaurantDTO.setSmallCategory(restaurant.getSmall_category());
-        restaurantDTO.setImageUri(restaurant.getImg());
+        restaurantDTO.setImageUrl(restaurant.getImg());
         restaurantDTO.setAddress(restaurant.getAddress());
         restaurantDTO.setTel(restaurant.getTel());
         restaurantDTO.setDetail(restaurant.getDetail());
@@ -119,9 +119,9 @@ public class RestaurantService {
         restaurantDTO.setRestaurantName(restaurant.getRestaurant_name());
         restaurantDTO.setOwnerName(restaurant.getOwner());
         restaurantDTO.setLargeCategory(restaurant.getLarge_category());
-        restaurantDTO.setMidiumCategory(restaurant.getMedium_category());
+        restaurantDTO.setMediumCategory(restaurant.getMedium_category());
         restaurantDTO.setSmallCategory(restaurant.getSmall_category());
-        restaurantDTO.setImageUri(restaurant.getImg());
+        restaurantDTO.setImageUrl(restaurant.getImg());
         restaurantDTO.setAddress(restaurant.getAddress());
         restaurantDTO.setTel(restaurant.getTel());
         restaurantDTO.setDetail(restaurant.getDetail());
@@ -139,28 +139,29 @@ public class RestaurantService {
     }
 
     // 식당 등록
-    public Restaurant enroll(User user, RestaurantDTO restaurantDto) {
+    public Restaurant enroll(User user,  RestaurantDTO restaurantDTO) {
         Restaurant restaurant = new Restaurant();
         restaurant.setUser(user);
-        restaurant.setRestaurant_name(restaurantDto.getRestaurant_name());
+        restaurant.setRestaurant_name(restaurantDTO.getRestaurantName());
         restaurant.setLarge_category("식당");
-        restaurant.setMedium_category(restaurantDto.getMedium_category());
-        restaurant.setSmall_category(restaurantDto.getSmall_category());
-        restaurant.setImg(restaurantDto.getImg());
-        restaurant.setAddress(restaurantDto.getAddress());
-        restaurant.setTel(restaurantDto.getTel());
-        restaurant.setOpentime(restaurantDto.getOpentime());
-        restaurant.setClosetime(restaurantDto.getClosetime());
-        restaurant.setHoliday(restaurantDto.getHoliday());
-        restaurant.setDetail(restaurantDto.getDetail());
-        restaurant.setTags(restaurantDto.getTags());
-        restaurant.setLng(restaurantDto.getLng());
-        restaurant.setLat(restaurantDto.getLat());
-        restaurant.setTotal_seat_count(restaurantDto.getTotal_seat_count());
-        if (restaurantDto.getVacancy_count() != null)
-            restaurant.setVacancy_count(restaurantDto.getVacancy_count());
+        restaurant.setMedium_category(restaurantDTO.getMediumCategory());
+        restaurant.setSmall_category(restaurantDTO.getSmallCategory());
+        restaurant.setImg(restaurantDTO.getImageUrl());
+        restaurant.setAddress(restaurantDTO.getAddress());
+        restaurant.setTel(restaurantDTO.getTel());
+        restaurant.setOpentime(restaurantDTO.getOpenTime());
+        restaurant.setClosetime(restaurantDTO.getCloseTime());
+        restaurant.setHoliday(restaurantDTO.getHoliday());
+        restaurant.setDetail(restaurantDTO.getDetail());
+        restaurant.setLng(restaurantDTO.getLng());
+        restaurant.setLat(restaurantDTO.getLat());
+        restaurant.setTotal_seat_count(restaurantDTO.getTotalSeatCount());
+        if (restaurantDTO.getVacancyCount() == null)
+            restaurant.setVacancy_count(restaurantDTO.getVacancyCount());
         else
-            restaurant.setVacancy_count(restaurantDto.getTotal_seat_count());
+            restaurant.setVacancy_count(restaurantDTO.getTotalSeatCount());
+
+        restaurant.setOwner(restaurantDTO.getOwnerName());
 
         return restaurantRepository.save(restaurant);
     }
@@ -173,25 +174,24 @@ public class RestaurantService {
     }
 
     // 식당 수정
-    public void patch(long restaurant_id, RestaurantDTO restaurantDto) {
+    public void patch(long restaurant_id, RestaurantDTON restaurantDto) {
         Restaurant restaurant = restaurantRepository.findById(restaurant_id).orElseThrow(
                 () -> new IllegalArgumentException("해당 PK를 가진 음식점을 찾지 못했습니다.")
         );
-        restaurant.setRestaurant_name(restaurantDto.getRestaurant_name() != null ? restaurantDto.getRestaurant_name() : restaurant.getRestaurant_name());
-        restaurant.setLarge_category(restaurantDto.getLarge_category() != null ? restaurantDto.getLarge_category() : restaurant.getLarge_category());
-        restaurant.setMedium_category(restaurantDto.getMedium_category() != null ? restaurantDto.getMedium_category() : restaurant.getMedium_category());
-        restaurant.setSmall_category(restaurantDto.getSmall_category() != null ? restaurantDto.getSmall_category() : restaurant.getSmall_category());
+        restaurant.setRestaurant_name(restaurantDto.getRestaurantName() != null ? restaurantDto.getRestaurantName() : restaurant.getRestaurant_name());
+        restaurant.setLarge_category(restaurantDto.getLargeCategory() != null ? restaurantDto.getLargeCategory() : restaurant.getLarge_category());
+        restaurant.setMedium_category(restaurantDto.getMediumCategory() != null ? restaurantDto.getMediumCategory() : restaurant.getMedium_category());
+        restaurant.setSmall_category(restaurantDto.getSmallCategory() != null ? restaurantDto.getSmallCategory() : restaurant.getSmall_category());
         restaurant.setAddress(restaurantDto.getAddress() != null ? restaurantDto.getAddress() : restaurant.getAddress());
         restaurant.setTel(restaurantDto.getTel() != null ? restaurantDto.getTel() : restaurant.getTel());
-        restaurant.setOpentime(restaurantDto.getOpentime() != null ? restaurantDto.getOpentime() : restaurant.getOpentime());
-        restaurant.setClosetime(restaurantDto.getClosetime() != null ? restaurantDto.getClosetime() : restaurant.getClosetime());
+        restaurant.setOpentime(restaurantDto.getOpenTime() != null ? restaurantDto.getOpenTime() : restaurant.getOpentime());
+        restaurant.setClosetime(restaurantDto.getCloseTime() != null ? restaurantDto.getCloseTime() : restaurant.getClosetime());
         restaurant.setHoliday(restaurantDto.getHoliday() != null ? restaurantDto.getHoliday() : restaurant.getHoliday());
         restaurant.setDetail(restaurantDto.getDetail() != null ? restaurantDto.getDetail() : restaurant.getDetail());
-        restaurant.setTags(restaurantDto.getTags() != null ? restaurantDto.getTags() : restaurant.getTags());
         restaurant.setLng(restaurantDto.getLng() != null ? restaurantDto.getLng() : restaurant.getLng());
         restaurant.setLat(restaurantDto.getLat() != null ? restaurantDto.getLat() : restaurant.getLat());
-        restaurant.setTotal_seat_count(restaurantDto.getTotal_seat_count() != null ? restaurantDto.getTotal_seat_count() : restaurant.getTotal_seat_count());
-        restaurant.setVacancy_count(restaurantDto.getVacancy_count() != null ? restaurantDto.getVacancy_count() : restaurant.getVacancy_count());
+        restaurant.setTotal_seat_count(restaurantDto.getTotalSeatCount() != null ? restaurantDto.getTotalSeatCount() : restaurant.getTotal_seat_count());
+        restaurant.setVacancy_count(restaurantDto.getVacancyCount() != null ? restaurantDto.getVacancyCount() : restaurant.getVacancy_count());
         restaurantRepository.save(restaurant);
     }
 }

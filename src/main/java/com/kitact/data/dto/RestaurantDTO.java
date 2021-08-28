@@ -1,31 +1,34 @@
 package com.kitact.data.dto;
 
+import com.kitact.data.model.Menu;
 import lombok.*;
 
-/**
- * 음식점의 정보를 담고있는 DTO 클래스
- */
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class RestaurantDTO {
-    private String restaurant_name;
-    private String large_category;
-    private String medium_category;
-    private String small_category;
-    private String img;
+    private long restaurantId;
+    private String restaurantName;
+    private String ownerName;
+    private String largeCategory;
+    private String mediumCategory;
+    private String smallCategory;
+    private String imageUrl;
     private String address;
     private String tel;
-    private String opentime;
-    private String closetime;
-    private String holiday;
     private String detail;
-    private String tags;
+    private List<String> tags;
+    private Integer totalSeatCount;
+    private Integer  vacancyCount;
     private Integer lng;
     private Integer lat;
-    private Integer total_seat_count;
-    private Integer vacancy_count;
-    private Integer owner;
+    private String openTime;
+    private String closeTime;
+    private String holiday;
+    private List<SeatDTO> seats;
+    private List<MenuDTO> menus;
 }

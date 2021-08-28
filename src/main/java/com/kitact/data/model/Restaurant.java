@@ -9,7 +9,7 @@ import javax.persistence.*;
 @ToString(callSuper = true)
 @Setter
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 @Entity
 @Table(name = "tb_restaurant")
@@ -60,9 +60,6 @@ public class Restaurant extends Timestamped {
     @Column(length = 200)
     private String detail;
 
-    @Column(length = 200)
-    private String tags;
-
     @Column
     private Integer lat;
 
@@ -84,7 +81,7 @@ public class Restaurant extends Timestamped {
                       String img,
                       String address, String tel,
                       String opentime, String closetime, String holiday,
-                      String detail, String tags,
+                      String detail,
                       Integer lat, Integer lng,
                       Integer total_seat_count, Integer vacancy_count,
                       String owner) {
@@ -99,7 +96,6 @@ public class Restaurant extends Timestamped {
         this.closetime = closetime;
         this.holiday = holiday;
         this.detail = detail;
-        this.tags = tags;
         this.lat = lat;
         this.lng = lng;
         this.total_seat_count = total_seat_count;

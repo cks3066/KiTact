@@ -28,7 +28,9 @@ public class SeatService {
 
     // 자리 등록
     public Seat enroll(SeatDTO seatDto) {
-        Restaurant restaurant = findRestaurantById(seatDto.getRestaurantId());
+        Restaurant restaurant = restaurantRepository.findById(seatDto.getRestaurantId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 음식점을 찾을 수 없습니다.")
+        );
 
         Seat seat = new Seat();
         seat.setRestaurant(restaurant);
@@ -48,11 +50,11 @@ public class SeatService {
     }
 
     // 레스토랑을 기준으로 자리 검색
-    public List search(long restaurant_id) {
-        Restaurant restaurant = findRestaurantById(restaurant_id);
-        if (restaurant == null){
-            throw new IllegalArgumentException("일치하는 식당 정보가 없습니다. 확인해주세요.");
-        }
+    public List<Seat> search(long restaurant_id) {
+        Restaurant restaurant = restaurantRepository.findById(restaurant_id).orElseThrow(
+                () -> new IllegalArgumentException("해당 음식점을 찾을 수 없습니다.")
+        );
+
         List<Seat> found = seatRepository.findAllByRestaurant(restaurant);
         if (found.isEmpty()){
             throw new IllegalArgumentException("등록된 자리 정보가 없습니다. 확인해주세요.");

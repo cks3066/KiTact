@@ -1,21 +1,16 @@
 package com.kitact.controller;
 
 import com.kitact.advice.exception.AuthenticationEntryPointException;
-import com.kitact.data.model.User;
+import com.kitact.data.dto.RestaurantDTO;
+import com.kitact.data.dto.RestaurantDTON;
 import com.kitact.data.model.UserRole;
 import com.kitact.data.response.BaseResponse;
 import com.kitact.repository.RestaurantRepository;
 import com.kitact.service.ResponseService;
 import com.kitact.service.RestaurantService;
-import com.kitact.data.dto.RestaurantDTO;
 import com.kitact.configuration.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -50,7 +45,8 @@ public class RestaurantController {
 
     // 식당 등록
     @PostMapping("/enroll")
-    public BaseResponse enroll(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody RestaurantDTO restaurantDTO) {
+    public BaseResponse enroll(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                               @RequestBody RestaurantDTO restaurantDTO) {
         if (!userDetails.getAuthorities().toString().contains(UserRole.OWNER.name())) {
             throw new AuthenticationEntryPointException();
         }
@@ -70,7 +66,7 @@ public class RestaurantController {
 
     // 식당 수정
     @PatchMapping("/{restaurant_id}")
-    public BaseResponse patch(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("restaurant_id") long restaurant_id, @RequestBody RestaurantDTO restaurantDto) {
+    public BaseResponse patch(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("restaurant_id") long restaurant_id, @RequestBody RestaurantDTON restaurantDto) {
         if (!userDetails.getAuthorities().toString().contains(UserRole.OWNER.name())) {
             throw new AuthenticationEntryPointException();
         }
