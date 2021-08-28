@@ -3,12 +3,16 @@ package com.kitact.service;
 import com.kitact.data.dto.*;
 import com.kitact.data.model.User;
 import com.kitact.data.model.Restaurant;
+import com.kitact.repository.MenuRepository;
+import com.kitact.repository.SeatRepository;
 import com.kitact.repository.UserRepository;
 import com.kitact.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +20,8 @@ import javax.transaction.Transactional;
 public class RestaurantService {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
+    private final MenuRepository menuRepository;
+    private final SeatRepository seatRepository;
     private final NaverSearchService naverSearchService;
 
     // 식당 검색
@@ -58,16 +64,78 @@ public class RestaurantService {
         throw new IllegalArgumentException("음식점이 없습니다!");
     }
 
-    public Restaurant search(int lat, int lng) {
-        return restaurantRepository.findByLatAndLng(lat, lng).orElseThrow(
+    public RestaurantDTON search(int lat, int lng) {
+        RestaurantDTON restaurantDTO = new RestaurantDTON();
+        Restaurant restaurant = restaurantRepository.findByLatAndLng(lat, lng).orElseThrow(
                 () -> new IllegalArgumentException("해당 좌표를 가진 음식점을 찾지 못했습니다.")
         );
+
+        List<SeatDTO> seats = seatRepository.findAllByRestaurant(restaurant).stream().map(
+                SeatDTO::new
+        ).collect(Collectors.toList());
+
+        List<MenuDTO> menus = menuRepository.findAllByRestaurant(restaurant).stream().map(
+                MenuDTO::new
+        ).collect(Collectors.toList());
+
+        restaurantDTO.setRestaurantId(restaurant.getRestaurant_id());
+        restaurantDTO.setRestaurantName(restaurant.getRestaurant_name());
+        restaurantDTO.setOwnerName(restaurant.getOwner());
+        restaurantDTO.setLargeCategory(restaurant.getLarge_category());
+        restaurantDTO.setMidiumCategory(restaurant.getMedium_category());
+        restaurantDTO.setSmallCategory(restaurant.getSmall_category());
+        restaurantDTO.setImageUri(restaurant.getImg());
+        restaurantDTO.setAddress(restaurant.getAddress());
+        restaurantDTO.setTel(restaurant.getTel());
+        restaurantDTO.setDetail(restaurant.getDetail());
+        //restaurantDTO.setTotalSeatCount(restaurant.getTotal_seat_count());
+        //restaurantDTO.setVacancyCount(restaurant.getVacancy_count());
+        restaurantDTO.setLat(restaurant.getLat());
+        restaurantDTO.setLng(restaurant.getLng());
+        restaurantDTO.setOpenTime(restaurant.getOpentime());
+        restaurantDTO.setCloseTime(restaurant.getClosetime());
+        restaurantDTO.setHoliday(restaurant.getHoliday());
+        restaurantDTO.setSeats(seats);
+        restaurantDTO.setMenus(menus);
+
+        return restaurantDTO;
     }
 
-    public Restaurant search(Long restaurantId) {
-        return restaurantRepository.findById(restaurantId).orElseThrow(
+    public RestaurantDTON search(Long restaurantId) {
+        RestaurantDTON restaurantDTO = new RestaurantDTON();
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
                 () -> new IllegalArgumentException("해당 PK를 가진 음식점을 찾지 못했습니다.")
         );
+
+        List<SeatDTO> seats = seatRepository.findAllByRestaurant(restaurant).stream().map(
+                SeatDTO::new
+        ).collect(Collectors.toList());
+
+        List<MenuDTO> menus = menuRepository.findAllByRestaurant(restaurant).stream().map(
+                MenuDTO::new
+        ).collect(Collectors.toList());
+
+        restaurantDTO.setRestaurantId(restaurant.getRestaurant_id());
+        restaurantDTO.setRestaurantName(restaurant.getRestaurant_name());
+        restaurantDTO.setOwnerName(restaurant.getOwner());
+        restaurantDTO.setLargeCategory(restaurant.getLarge_category());
+        restaurantDTO.setMidiumCategory(restaurant.getMedium_category());
+        restaurantDTO.setSmallCategory(restaurant.getSmall_category());
+        restaurantDTO.setImageUri(restaurant.getImg());
+        restaurantDTO.setAddress(restaurant.getAddress());
+        restaurantDTO.setTel(restaurant.getTel());
+        restaurantDTO.setDetail(restaurant.getDetail());
+        //restaurantDTO.setTotalSeatCount(restaurant.getTotal_seat_count());
+        //restaurantDTO.setVacancyCount(restaurant.getVacancy_count());
+        restaurantDTO.setLat(restaurant.getLat());
+        restaurantDTO.setLng(restaurant.getLng());
+        restaurantDTO.setOpenTime(restaurant.getOpentime());
+        restaurantDTO.setCloseTime(restaurant.getClosetime());
+        restaurantDTO.setHoliday(restaurant.getHoliday());
+        restaurantDTO.setSeats(seats);
+        restaurantDTO.setMenus(menus);
+
+        return restaurantDTO;
     }
 
     // 식당 등록
