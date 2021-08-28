@@ -29,7 +29,7 @@ const initialState = {
 const loginFB = (id, pwd) => {
   return function (dispatch, getState, { history }) {
     axios
-      .post('http://localhost:8080/user/sign-in', { username: 'value', password: 'value' })
+      .post('http://localhost:8080/user/sign-in', { username: id, password: pwd })
       .then(user => {
         const { accessToken } = user.data.data
 
@@ -48,6 +48,7 @@ const loginFB = (id, pwd) => {
         history.push('/map')
       })
       .catch(error => {
+        window.alert("로그인에 실패하였습니다. 다시 시도해주세요.");
         console.log('로그인 post 에러')
         console.log(error.response.data)
       })
@@ -66,6 +67,7 @@ const signupFB = (id, pwd, is_owner) => {
         history.push('/')
       })
       .catch(error => {
+        window.alert("회원가입에 실패하였습니다. 다시 시도해주세요.");
         console.log('회원가입 post 에러')
         console.log(error.response)
       })
