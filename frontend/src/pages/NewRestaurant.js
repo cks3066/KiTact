@@ -46,7 +46,7 @@ export const NewRestaurant = () => {
 
   const addInfo = () => {
     dispatch(
-      rAc.addInfoWithFB({
+      rAc.createDB({
         large_category: largeCategory,
         midium_category: midiumCategory,
         small_category: smallCategory,

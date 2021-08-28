@@ -19,7 +19,8 @@ export const MenuList = () => {
     setmenuModalVisible(false)
   }
 
-  const [visible, setVisible] = useState(false)
+  const [menuListvisible, setMenuListvisible] = useState(false)
+  const [menuOrdervisible, setMenuOrderVisible] = useState(false)
 
   const order = () => {
     if (restaurant.info.seats.find(seat => seat.client === user.user) && user.is_login) {
@@ -29,19 +30,22 @@ export const MenuList = () => {
     const userId = 'Henrietta'
     //const userId = ''
     if (restaurant.info.seats.find(seat => seat.client === userId)) {
-      setVisible(!visible)
+      setMenuOrderVisible(!menuOrdervisible)
     }
+  }
+
+  const openMenuList = () => {
+    setMenuListvisible(!menuListvisible)
   }
 
   return (
     <OwnerPermit>
       <MenuOrder>
-        <Button _onClick={order}>{visible ? '메뉴 닫기' : '메뉴 수정'}</Button>
-        <Brochure visibility={visible}>
+        <Button _onClick={openMenuList}>{menuListvisible ? '메뉴 닫기' : '메뉴 열기'}</Button>
+        <Brochure visibility={menuListvisible}>
           <Grid>
-            {restaurant.menu_list.map((menu, index) => (
-              <Menu menu={menu} key={index} />
-            ))}
+            {restaurant.menu_list &&
+              restaurant.menu_list.map((menu, index) => <Menu menu={menu} key={index} />)}
             <Button is_float text='+' _onClick={openMenuModal} onClose={closeModal} />
             {menumodalVisible && (
               <Modal
@@ -59,15 +63,14 @@ export const MenuList = () => {
       <MenuOrder>
         <Button _onClick={order}>주문하기</Button>
         <br />
-        <Brochure visibility={visible}>
+        <Brochure visibility={menuOrdervisible}>
           <Grid>
             <br />
             <TotalPrice>
               총 ₩ {new Intl.NumberFormat().format(restaurant.total_price)}원 결제하기
             </TotalPrice>
-            {restaurant.menu_list.map((menu, index) => (
-              <Menu menu={menu} key={index} />
-            ))}
+            {restaurant.menu_list &&
+              restaurant.menu_list.map((menu, index) => <Menu menu={menu} key={index} />)}
             <Button is_float text='+' _onClick={openMenuModal} onClose={closeModal} />
             {menumodalVisible && (
               <Modal

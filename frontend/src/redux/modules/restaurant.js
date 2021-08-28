@@ -4,6 +4,7 @@ import { firestore, storage } from '../../shared/Firebase'
 import { actionCreators as imageActions } from './image'
 import moment from 'moment'
 import axios from 'axios'
+import { DraftsRounded } from '@material-ui/icons'
 
 const category = [
   {
@@ -78,6 +79,20 @@ const category = [
   },
 ]
 
+const seats_rull = [
+  { id: 1, type: 'seat', icon: '🙋‍♂️', text: '1명' },
+  { id: 2, type: 'seat', icon: '👨‍❤️‍👨', text: '2명' },
+  { id: 3, type: 'seat', icon: '👨‍👩‍👧', text: '3명' },
+  { id: 4, type: 'seat', icon: '👨‍👩‍👧‍👧', text: '4명' },
+  { id: 5, type: 'door', icon: '🚪', text: '출입구' },
+  { id: 6, type: 'checkout', icon: '💰', text: '계산대' },
+  { id: 7, type: 'kitchen', icon: '👩‍🍳', text: '주방' },
+  { id: 8, type: 'toilet', icon: '🚽', text: '화장실' },
+  { id: 9, type: 'window', icon: '👓', text: '창가' },
+  { id: 10, type: 'vacancy', icon: '🍴', text: '공석' },
+  { id: 11, type: 'full', icon: '🍽', text: '이용중' },
+]
+
 const initialState = {
   category: category,
   info: {
@@ -97,27 +112,17 @@ const initialState = {
     opentime: '15:00:00',
     closetime: '01:00:00',
     holiday: '매주 월요일',
-    seats_rull: [
-      { id: 1, type: 'seat', icon: '🙋‍♂️', text: '1명' },
-      { id: 2, type: 'seat', icon: '👨‍❤️‍👨', text: '2명' },
-      { id: 3, type: 'seat', icon: '👨‍👩‍👧', text: '3명' },
-      { id: 4, type: 'seat', icon: '👨‍👩‍👧‍👧', text: '4명' },
-      { id: 5, type: 'door', icon: '🚪', text: '출입구' },
-      { id: 6, type: 'checkout', icon: '💰', text: '계산대' },
-      { id: 7, type: 'kitchen', icon: '👩‍🍳', text: '주방' },
-      { id: 8, type: 'toilet', icon: '🚽', text: '화장실' },
-      { id: 9, type: 'window', icon: '👓', text: '창가' },
-      { id: 10, type: 'vacancy', icon: '🍴', text: '공석' },
-      { id: 11, type: 'full', icon: '🍽', text: '이용중' },
-    ],
+    seats_rull: seats_rull,
+    lng: 0,
+    lat: 0,
     seat_edit_toggle: false,
     seats: [
       {
         id: 1,
         type: 'seat',
         icon: '👨‍👩‍👧',
-        x: 520,
-        y: 90,
+        posX: 520,
+        posY: 90,
         people: 3,
         vacancy: true,
         client: '',
@@ -126,8 +131,8 @@ const initialState = {
         id: 2,
         type: 'seat',
         icon: '👨‍👩‍👧‍👧',
-        x: 520,
-        y: 300,
+        posX: 520,
+        posY: 300,
         people: 4,
         vacancy: true,
         client: '',
@@ -136,8 +141,8 @@ const initialState = {
         id: 3,
         type: 'seat',
         icon: '🙋‍♂️',
-        x: 320,
-        y: 90,
+        posX: 320,
+        posY: 90,
         people: 1,
         vacancy: false,
         client: 'Henrietta',
@@ -146,8 +151,8 @@ const initialState = {
         id: 4,
         type: 'seat',
         icon: '👨‍❤️‍👨',
-        x: 140,
-        y: 90,
+        posX: 140,
+        posY: 90,
         people: 2,
         vacancy: false,
         client: 'Leavitt',
@@ -156,8 +161,8 @@ const initialState = {
         id: 5,
         type: 'seat',
         icon: '👨‍❤️‍👨',
-        x: 320,
-        y: 300,
+        posX: 320,
+        posY: 300,
         people: 2,
         vacancy: true,
         client: '',
@@ -166,17 +171,17 @@ const initialState = {
         id: 6,
         type: 'seat',
         icon: '👨‍👩‍👧',
-        x: 140,
-        y: 300,
+        posX: 140,
+        posY: 300,
         people: 3,
         vacancy: true,
         client: '',
       },
-      { id: 7, type: 'door', icon: '🚪', x: 50, y: 10 },
-      { id: 8, type: 'checkout', icon: '💰', x: 16, y: 150 },
-      { id: 9, type: 'kitchen', icon: '👩‍🍳', x: 608, y: 395 },
-      { id: 10, type: 'toilet', icon: '🚽', x: 617, y: 50 },
-      { id: 11, type: 'window', icon: '👓', x: 400, y: 10 },
+      { id: 7, type: 'door', icon: '🚪', posX: 50, posY: 10 },
+      { id: 8, type: 'checkout', icon: '💰', posX: 16, posY: 150 },
+      { id: 9, type: 'kitchen', icon: '👩‍🍳', posX: 608, posY: 395 },
+      { id: 10, type: 'toilet', icon: '🚽', posX: 617, posY: 50 },
+      { id: 11, type: 'window', icon: '👓', posX: 400, posY: 10 },
     ],
   },
   menu_list: [
@@ -260,7 +265,7 @@ const addMenu = createAction(ADD_MENU, menu => ({ menu }))
 const updateMenu = createAction(UPDATE_MENU, element => ({ element }))
 const addInfo = createAction(ADD_INFO, info => ({ info }))
 
-const addInfoWithFB = info => {
+const createDB = info => {
   return function (dispatch, getState, { history }) {
     // const search = getState().search
     // const user = getState().user.user
@@ -278,8 +283,7 @@ const addInfoWithFB = info => {
       closetime: info.closetime,
       holiday: info.holiday,
       detail: info.detail,
-      // tags: info.tags,
-      tags: temp_tags,
+      tags: info.tags,
       total_seat_count: info.total_seat_count,
       vacancy_count: info.vacancy_count,
       owner: info.owner,
@@ -315,7 +319,7 @@ const addInfoWithFB = info => {
                 ...restaurant_data_db,
                 user_id: user,
                 img: url,
-                lat: search.let,
+                lat: search.lat,
                 lng: search.lng,
               },
               config
@@ -342,6 +346,69 @@ const addInfoWithFB = info => {
   }
 }
 
+const loadDB = id => {
+  return function (dispatch, getState, { history }) {
+    axios
+      .get(`http://localhost:8080/restaurant/search/${id}`, {})
+      .then(res => {
+        console.log(res.message)
+        dispatch(load(res.data.data))
+      })
+      .catch(err => {
+        console.log('출력 실패', err)
+      })
+  }
+}
+
+const updateDB = id => {
+  return function (dispatch, getState, { history }) {
+    const restaurant = getState().restaurant
+    axios
+      .patch(`http://localhost:8080/restaurant/${restaurant.info.id}`, {
+        restaurant,
+      })
+      .then(res => {
+        console.log(res)
+        dispatch(load(res.data))
+      })
+      .catch(err => {
+        console.log('수정 실패', err)
+      })
+  }
+}
+
+const deleteDB = id => {
+  return function (dispatch, getState, { history }) {
+    const restaurant = getState().restaurant
+    axios
+      .delete(`http://localhost:8080/restaurant/${restaurant.info.id}`, {})
+      .then(res => {
+        console.log(res)
+        history.replace('/')
+      })
+      .catch(err => {
+        console.log('삭제 실패', err)
+      })
+  }
+}
+
+let position = {
+  x: 0,
+  y: 0,
+}
+
+const pickPosition = () => {
+  if (position.y > 400) {
+    position.x = 0
+    position.y = 0
+  } else if (position.x < 700) {
+    position.x += 100
+  } else {
+    position.y += 100
+    position.x = 0
+  }
+}
+
 const calculateSeat = draft => {
   const vacancy_count = draft.info.seats
     .filter(seat => seat.type === 'seat' && seat.vacancy === false)
@@ -360,7 +427,44 @@ const calculateSeat = draft => {
 
 export default handleActions(
   {
-    [LOAD]: (state, action) => produce(state, draft => {}),
+    [LOAD]: (state, action) =>
+      produce(state, draft => {
+        const restaurant = action.payload.restaurant
+        draft.info.id = restaurant.restaurantId
+        draft.info.name = restaurant.restaurantName
+        draft.info.owner = restaurant.ownerName
+        draft.info.large_category = restaurant.largeCategory
+        draft.info.medium_category = restaurant.midiumCategory
+        draft.info.small_category = restaurant.smallCategory
+        draft.info.img = restaurant.imageUri
+        draft.info.address = restaurant.address
+        draft.info.tel = restaurant.tel
+        draft.info.detail = restaurant.detail
+        draft.info.tags = restaurant.tags
+        draft.info.total_seat_count = restaurant.totalSeatCount
+        draft.info.vacancy_count = restaurant.vacancyCount
+        draft.info.lng = restaurant.lng
+        draft.info.lat = restaurant.lat
+        draft.info.opentime = restaurant.openTime
+        draft.info.closetime = restaurant.closeTime
+        draft.info.holiday = restaurant.holiday
+        draft.info.seats = restaurant.seats
+        restaurant.seats.map((seat, index) => ({
+          //seats_rull.find((rull)=>seat.people === rull.id ).icon
+        }))
+
+        draft.menu_list = []
+        restaurant.menus.map((menu, index) =>
+          draft.menu_list.push({
+            id: index, // 임시: 디비에서 반환해주어야함
+            active: menu.active,
+            src: menu.imageUri,
+            name: menu.menuName,
+            price: menu.menuPrice,
+            quantity: menu.quantity,
+          })
+        )
+      }),
     [CREATE]: (state, action) =>
       produce(state, draft => {
         draft.push(action.payload)
@@ -410,12 +514,13 @@ export default handleActions(
     [ADD_SEAT]: (state, action) =>
       produce(state, draft => {
         const seat_rull = draft.info.seats_rull.find(seat => seat.id === action.payload.id)
+        pickPosition()
         let seat = {
           id: draft.info.seats.length + 1,
           type: seat_rull.type,
           icon: seat_rull.icon,
-          x: 100,
-          y: 100,
+          posX: position.x,
+          posY: position.y,
         }
         seat_rull.type === 'seat'
           ? (seat = { ...seat, vacancy: true, people: seat_rull.id })
@@ -541,7 +646,10 @@ const actionCreators = {
   addMenu,
   updateMenu,
   addInfo,
-  addInfoWithFB,
+  createDB,
+  loadDB,
+  //updateDB,
+  deleteDB,
 }
 
 export { actionCreators }

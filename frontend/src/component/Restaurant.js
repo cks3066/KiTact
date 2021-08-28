@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Grid, Image, Input, Text } from '../elements'
+import React, { useEffect, useState } from 'react'
+import { Button, Grid, Image, Input, Text } from '../elements'
 import { Tags } from '../elements/Tags'
 import { MenuList } from './MenuList'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,25 +10,27 @@ import { Combobox } from '../elements/Combobox'
 import { PostCode } from '../elements/PostCode'
 import Modal from '../elements/Modal'
 import { actionCreators as rAc } from '../redux/modules/restaurant'
-import axios from 'axios'
 import { Upload } from '../elements/Upload'
 
 export const Restaurant = () => {
-  axios.get('http://localhost:8080/test/time').then(res => {
-    console.log(res)
-  })
-  const restaurant = useSelector(state => state.restaurant)
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    console.log('LOAD')
+    dispatch(rAc.loadDB(7))
+    return () => {}
+  }, [])
+
+  const restaurant = useSelector(state => state.restaurant)
   const preview = useSelector(state => state.image.preview)
 
-  const midium_category = restaurant.category.find(
-    category => category.text === restaurant.info.large_category
-  ).list
+  const midium_category = restaurant.info.midium_category.list
+    ? restaurant.category.find(category => category.text === restaurant.info.large_category).list
+    : ''
 
-  const small_category = midium_category.find(
-    category => category.text === restaurant.info.midium_category
-  )
+  const small_category = midium_category
+    ? midium_category.find(category => category.text === restaurant.info.midium_category)
+    : ''
 
   const [postmodalVisible, setpostModalVisible] = useState(false)
 
@@ -179,6 +181,7 @@ export const Restaurant = () => {
         <Grid>
           <MenuList />
         </Grid>
+        {/* <Button _onClick={dispatch(rAc.updateDB(restaurant.info.id))}>수정 완료</Button> */}
       </Grid>
       {/* ↑점주UI ================================================================================ ↓고객UI */}
       <Grid padding='10px'>

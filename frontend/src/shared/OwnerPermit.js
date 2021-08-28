@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux'
 
 export const OwnerPermit = props => {
   const restaurant = useSelector(state => state.restaurant)
-  const user = { id: 'asdfqwer' }
-  //const user = useSelector(state => state.user)
+  const user = useSelector(state => state.user)
 
   let childNumber = 0
-  if (user.id === restaurant.info.id) {
+  // if (user.id === restaurant.info.id) {
+  if (true) {
   } else {
     childNumber = 1
   }
