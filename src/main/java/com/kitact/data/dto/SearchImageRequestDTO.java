@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-// 지역 검색 요청 변수에 대한 변수 생성
+/**
+ * 네이버 지역 검색 API 호출 후 전달되는 DTO 클래스
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

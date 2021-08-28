@@ -31,8 +31,6 @@ const loginFB = (id, pwd) => {
     axios
       .post('http://localhost:8080/user/sign-in', { username: 'value', password: 'value' })
       .then(user => {
-        console.log('로그인 성공')
-        console.log(user)
         const { accessToken } = user.data.data
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
@@ -47,7 +45,7 @@ const loginFB = (id, pwd) => {
           ) //is_owner 넘겨야되는데 response 에 is_owner가 없음
         )
 
-        history.push('/')
+        history.push('/map')
       })
       .catch(error => {
         console.log('로그인 post 에러')
@@ -65,9 +63,6 @@ const signupFB = (id, pwd, is_owner) => {
         owner: is_owner,
       })
       .then(user => {
-        console.log('회원가입 성공')
-        console.log(user)
-        console.log(user.data.message)
         history.push('/')
       })
       .catch(error => {

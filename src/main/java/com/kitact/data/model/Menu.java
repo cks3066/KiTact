@@ -28,10 +28,10 @@ public class Menu extends Timestamped {
     private String menu_name;
 
     @Column(nullable = false)
-    private Long menu_price;
+    private Integer menu_price;
 
 
-    public Menu(String src, String menu_name, Long menu_price) {
+    public Menu(String src, String menu_name, Integer menu_price) {
         this.src = src;
         this.menu_name = menu_name;
         this.menu_price = menu_price;

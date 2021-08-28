@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-// 지역 검색 출력 결과를 변수화
+/**
+ * 네이버 지역 검색 API 호출 후 전달되는 DTO 클래스
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +30,8 @@ public class SearchLocalResponseDTO {
         private String telephone;  // 빈 문자열 반환. 과거에 제공되던 항목이라 하위 호환성을 위해 존재한다.
         private String address;  // 검색 결과 업체, 기관명의 주소를 제공한다.
         private String roadAddress;  // 검색 결과 업체, 기관명의 도로명 주소를 제공한다.
-        private int mapX;  // 검색 결과 업체, 기관명 위치 정보의 x좌표를 제공한다. 제공값은 카텍좌표계 값으로 제공된다. 이 좌표값은 지도 API와 연동 가능하다.
-        private int mapY;  // 검색 결과 업체, 기관명 위치 정보의 y좌표를 제공한다. 제공값은 카텍 좌표계 값으로 제공된다. 이 좌표값은 지도 API와 연동 가능하다.
+        private int mapx;  // 검색 결과 업체, 기관명 위치 정보의 x좌표를 제공한다. 제공값은 카텍좌표계 값으로 제공된다. 이 좌표값은 지도 API와 연동 가능하다.
+        private int mapy;  // 검색 결과 업체, 기관명 위치 정보의 y좌표를 제공한다. 제공값은 카텍 좌표계 값으로 제공된다. 이 좌표값은 지도 API와 연동 가능하다.
     }
 
     @Override

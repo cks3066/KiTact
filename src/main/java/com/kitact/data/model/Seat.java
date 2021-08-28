@@ -17,7 +17,7 @@ public class Seat extends Timestamped {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long seat_id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
@@ -42,7 +42,6 @@ public class Seat extends Timestamped {
 
     @Column(nullable = false)
     private String client;
-
 
     public Seat(String type, Integer x, Integer y, Integer people, Boolean vacancy, String client) {
         this.type = type;

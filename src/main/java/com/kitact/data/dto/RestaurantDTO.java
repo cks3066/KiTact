@@ -2,12 +2,15 @@ package com.kitact.data.dto;
 
 import lombok.*;
 
+/**
+ * 음식점의 정보를 담고있는 DTO 클래스
+ */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RestaurantDto {
+public class RestaurantDTO {
     private String restaurant_name;
     private String large_category;
     private String medium_category;
@@ -24,5 +27,5 @@ public class RestaurantDto {
     private Integer lat;
     private Integer total_seat_count;
     private Integer vacancy_count;
-    private String owner;
+    private Integer owner;
 }

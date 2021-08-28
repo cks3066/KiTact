@@ -1,0 +1,22 @@
+diff a/frontend/src/component/Header.js b/frontend/src/component/Header.js	(rejected hunks)
+@@ -96,14 +96,16 @@
+     margin: '0.5rem',
+   },
+   title: {
+-    position: 'absolute',
+-    left: '50%',
+-    marginLeft: '-360px',
+-    width: '720px',
++    position: 'relative',
+   },
+ }))
+ 
++const cookies = new Cookies()
++
+ export default function Header() {
++  const dispatch = useDispatch()
++  const is_login = !(cookies.get('is_login') === undefined)
++  console.log(is_login)
+   const classes = useStyles()
+   const theme = useTheme()
+   const [open, setOpen] = React.useState(false)
