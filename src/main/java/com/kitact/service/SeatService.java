@@ -1,7 +1,7 @@
 package com.kitact.service;
 
 import com.kitact.advice.NotFoundException;
-import com.kitact.data.dto.SeatDto;
+import com.kitact.data.dto.SeatDTO;
 import com.kitact.data.model.Restaurant;
 import com.kitact.data.model.Seat;
 import com.kitact.repository.RestaurantRepository;
@@ -27,8 +27,8 @@ public class SeatService {
     }
 
     // 자리 등록
-    public Seat enroll(SeatDto seatDto) {
-        Restaurant restaurant = findRestaurantById(seatDto.getRestaurant_id());
+    public Seat enroll(SeatDTO seatDto) {
+        Restaurant restaurant = findRestaurantById(seatDto.getRestaurantId());
 
         Seat seat = new Seat();
         seat.setRestaurant(restaurant);
@@ -41,8 +41,8 @@ public class SeatService {
         else
             seat.setVacancy(true);
             seat.setClient("");
-        seat.setX(seatDto.getX());
-        seat.setY(seatDto.getY());
+        seat.setX(seatDto.getPosX());
+        seat.setY(seatDto.getPosY());
 
         return seatRepository.save(seat);
     }
@@ -53,7 +53,7 @@ public class SeatService {
         if (restaurant == null){
             throw new IllegalArgumentException("일치하는 식당 정보가 없습니다. 확인해주세요.");
         }
-        List<Seat> found = seatRepository.findAllByRestaurant(restaurant_id);
+        List<Seat> found = seatRepository.findAllByRestaurant(restaurant);
         if (found.isEmpty()){
             throw new IllegalArgumentException("등록된 자리 정보가 없습니다. 확인해주세요.");
         }
@@ -73,16 +73,16 @@ public class SeatService {
 
 
     // 자리 수정
-    public int patch(long seat_id, SeatDto seatDto) {
+    public int patch(long seat_id, SeatDTO seatDto) {
         Optional<Seat> found = seatRepository.findById(seat_id);
         if (found.isPresent()) {
             Seat seat = found.get();
             if (seatDto.getType() != null)
                 seat.setType(seatDto.getType());
-            if (seatDto.getX() != null)
-                seat.setX(seatDto.getX());
-            if (seatDto.getY() != null)
-                seat.setY(seatDto.getY());
+            if (seatDto.getPosX() != null)
+                seat.setX(seatDto.getPosX());
+            if (seatDto.getPosY() != null)
+                seat.setY(seatDto.getPosY());
             if (seatDto.getPeople() != null)
                 seat.setPeople(seatDto.getPeople());
             if (seatDto.getVacancy() != null)
