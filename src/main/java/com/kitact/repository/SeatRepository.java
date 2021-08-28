@@ -10,6 +10,6 @@ import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "seat", path = "seat")
 public interface SeatRepository extends JpaRepository<Seat, Long> {
-    List<Seat> findAllByRestaurant(Long restaurant_id);
+    List<Seat> findAllByRestaurant(Restaurant restaurant);
     List<Seat> findByClient(@Param("client") String client);
 }

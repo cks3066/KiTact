@@ -1,11 +1,9 @@
 package com.kitact.controller;
 
 import com.kitact.configuration.security.UserDetailsImpl;
-import com.kitact.data.dto.SeatDto;
-import com.kitact.data.model.Seat;
+import com.kitact.data.dto.SeatDTO;
 import com.kitact.data.model.User;
 import com.kitact.data.response.BaseResponse;
-import com.kitact.data.response.MultiResponse;
 import com.kitact.repository.SeatRepository;
 import com.kitact.service.ResponseService;
 import com.kitact.service.SeatService;
@@ -31,7 +29,7 @@ public class SeatController {
     @Secured("ROLE_OWNER")
     public BaseResponse enroll(Authentication authentication,
                                @AuthenticationPrincipal UserDetailsImpl userDetails,
-                               @RequestBody SeatDto seatDto) {
+                               @RequestBody SeatDTO seatDto) {
         User user = userDetails.getUser();
         String user_role = authentication.getAuthorities().toString();
 
@@ -68,7 +66,7 @@ public class SeatController {
     @PatchMapping("/{seat_id}")
     @PreAuthorize("hasRole('OWNER')")
     @Secured("ROLE_OWNER")
-    public BaseResponse patch(@PathVariable("seat_id") long seat_id, @RequestBody SeatDto seatDto) {
+    public BaseResponse patch(@PathVariable("seat_id") long seat_id, @RequestBody SeatDTO seatDto) {
         if (seatService.patch(seat_id, seatDto) < 0) {
             throw new IllegalArgumentException("일치하는 회원 정보가 없습니다. 확인해주세요.");
         }
