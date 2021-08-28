@@ -21,6 +21,7 @@ const RestaurantSearch = () => {
       .then(res => {
         dispatch(searchActions.setRestaurant(res.data.data))
 
+        console.log(res)
         window.naver.maps.Service.geocode(
           {
             address: res.data.data.address,

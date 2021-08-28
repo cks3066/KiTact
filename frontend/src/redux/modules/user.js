@@ -22,7 +22,6 @@ const setUser = createAction(SET_USER, (user, token) => ({ user, token }))
 const initialState = {
   user: null,
   is_login: false,
-  is_owner: false,
 }
 
 // middleware actions
@@ -40,6 +39,9 @@ const loginFB = (id, pwd) => {
             {
               user_name: id,
               id: id,
+              is_owner: false,
+              uid: user.data.data,
+              restaurant_id: user.data.data,
             },
             user.data.data
           ) //is_owner 넘겨야되는데 response 에 is_owner가 없음
