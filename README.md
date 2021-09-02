@@ -7,22 +7,22 @@
 
 ## 기능
 
-    1. 회원가입 및 로그인
-        - 회원가입 
-        - jwt 로그인 (Spring Security 이용, user와 owner 권한 구분)
+1. 회원가입 및 로그인
+    - 회원가입 
+    - jwt 로그인 (Spring Security 이용, user와 owner 권한 구분)
 
-    2. 식당 검색
-        - 네이버 검색 API
-        - 지도 API
+2. 식당 검색
+    - 네이버 검색 API
+    - 지도 API
 
-    3. 예약 관리
-        - 식당 정보 등록
-        - drag를 통한 좌석 정보 설정
+3. 예약 관리
+    - 식당 정보 등록
+    - drag를 통한 좌석 정보 설정
 
 
 ## 활용 기술
 
-    - React
-    - JavaScript
-    - Java Spring
+- React
+- JavaScript
+- Java Spring
         
