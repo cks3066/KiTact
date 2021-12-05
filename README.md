@@ -5,7 +5,7 @@
  - 개인회원의 식당 검색 및 예약
  - 기업회원의 식당 등록 및 관리, 예약 관리
  
-<div align="center">
+<div>
 <h2>주요 기능</h2>
 
 <img src="https://user-images.githubusercontent.com/62434898/144762713-9eaa7a16-f63b-462e-b7af-d83b628d7503.png" width="200px" height="300px">
