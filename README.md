@@ -27,4 +27,8 @@
 - React
 - JavaScript
 - Java Spring
+
+## Rest API
+
+https://prickly-measure-fe9.notion.site/KiTact-Team-d8c3cade30af4dd3b21b2f825967b59a
         
