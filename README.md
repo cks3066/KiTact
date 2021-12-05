@@ -7,11 +7,11 @@
  
 <div>
 <h2>주요 기능</h2>
-
+<p>1. 회원가입 및 로그인 </p>
 <img src="https://user-images.githubusercontent.com/62434898/144762713-9eaa7a16-f63b-462e-b7af-d83b628d7503.png" width="200px" height="300px">
 <img src="https://user-images.githubusercontent.com/62434898/144762710-3ca9507a-c128-49e8-827c-57a33a299025.png" width="200px" height="300px">
-<p>1. 회원가입 및 로그인<br/>
-    - 회원가입 <br/>
+ <p>  
+ - 회원가입 <br/>
     - jwt 로그인 (Spring Security 이용, user와 owner 권한 구분)<br/>
  </p>
 <br/>
