@@ -1,5 +1,6 @@
-# KiTact Web Project
-언택트 시대, 고객 점주 상호맞춤형 키오스크 웹 프로젝트
+<h1 align="center">KiTact - Kiosk Web Application</h1>
+
+> <b>언택트 시대, 고객 점주 상호맞춤형 키오스크 웹 프로젝트</b>
 
  - Owner는 식당 등록 및 관리, 예약 관리
  - User는 식당 검색 및 예약
