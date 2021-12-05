@@ -1,4 +1,4 @@
-<h1>KiTact - Kiosk Web Application</h1>
+<h1>KiTact - Kiosk Web Application 📲</h1>
 
 > <b>언택트 시대, 고객 점주 상호맞춤형 키오스크 웹 프로젝트</b>
  
